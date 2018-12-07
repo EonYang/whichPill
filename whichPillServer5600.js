@@ -6,13 +6,13 @@ app.use(express.static('public'));
 const server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
+
 const io = require('socket.io').listen(ioPort);
 
-const game = new GAME();
 
 let data = {};
 
-const web = io.of('/bullySocket');
+const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
 });

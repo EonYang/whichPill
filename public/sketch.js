@@ -1,4 +1,4 @@
-let socket = socket.io();
+let socket = io('/');
 
 
 let data = {
