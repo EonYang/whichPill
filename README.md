@@ -8,16 +8,11 @@
 
 #### sendCookie
 
-```
-'cookie string'
+    'cookie string'
 
-```
+#### resetGame(str);
 
-#### resetGame
-
-```
-
-```
+    'fhjghjgjkh'
 
 #### startGame
 
@@ -32,7 +27,6 @@
   choice:'a',
 
 }
-
 ```
 
 #### sendChat
@@ -41,7 +35,6 @@
   who:'Daniel',
   text:'asdhjfjksadfjka',
 }
-
 ```
 
 #### setEndRound
@@ -49,7 +42,6 @@
 ```{
   endRound:7
 }
-
 ```
 
 ### Server to Client
@@ -58,17 +50,17 @@
 
         {
           gameState: 'inProgress',
-          Scores:[{name:'',sum:2, eachRound:[23,0,15,22]}],
+          Scores:[{name:'', eachRound:[23,0,15,22]}],
           round: 4,
           whosTurn:'Daniel',
           questions: [{
             chance: 0.23;
             value: 125
-            }{
+            },{
               chance: 0.23;
               value: 125
             }]
-            lastTurn{
+            lastTurn:{
               who:'Daniel',
               which:'B',
               hasWin: false,
