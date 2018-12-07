@@ -2,7 +2,6 @@ class GAME {
   constructor() {
     this.users = [];
     this.phase = '';
-    this.
   }
 }
 
