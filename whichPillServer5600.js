@@ -1,3 +1,4 @@
+const tool = require('tool.js');
 const express = require('express');
 const port = 5600;
 const ioPort = 5600;
@@ -10,7 +11,7 @@ const server = require('http').createServer(app).listen(port, function() {
 const io = require('socket.io').listen(server);
 
 
-let data = {};
+let gameData = {};
 
 const web = io.of('/');
 web.on('connection', function(socket) {
