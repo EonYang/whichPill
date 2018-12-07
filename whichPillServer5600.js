@@ -18,34 +18,49 @@ const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
 
-  socket.on('setNameAndRole', function(data) {
-    console.log(JSON.stringify(data));
-  });
-
   socket.on('sendCookie', function(data) {
     console.log(JSON.stringify(data));
+    game.tryRetriveUser(data, socket.id);
+  });
+
+  socket.on('setNameAndRole', function(data) {
+    console.log(JSON.stringify(data));
+    let name = data.name;
+    let socketId = data.socket.id;
+    let role = data.role;
+    let cookie = data.cookie;
+    game.addUser(name, socketId, role, cookie);
+    io.emit('gameState', game.getGameData());
   });
 
   socket.on('resetGame', function() {
     console.log('game Resetted');
+    game.resetGame();
+    io.emit('gameResetted');
+    io.emit('gameState', game.getGameData());
   });
 
   socket.on('startGame', function() {
     console.log('game startted');
+    game.startGame();
+    io.emit('gameState', game.getGameData());
   });
 
   socket.on('makeChoice', function(data) {
     console.log(JSON.stringify(data));
+    game.storeUserChoice(socket.id, data.choice);
+    io.emit('gameState', game.getGameData());
   });
 
   socket.on('sendChat', function(data) {
     console.log(JSON.stringify(data));
+    io.emit('newChat', data);
   });
 
   socket.on('setEndRound', function(data) {
     console.log(JSON.stringify(data));
+    game.setEndRound(data);
   });
-
 });
 
 
@@ -64,7 +79,7 @@ function sendChatSnippet() {
 function sendDataSnippet() {
   let dataSnippet = {
     gameState: 'inProgress',
-    Scores: [{
+    scores: [{
       name: 'Daniel',
       eachRound: [23, 0, 15, 22, 0]
     }, {
@@ -88,10 +103,12 @@ function sendDataSnippet() {
     }],
     lastTurn: {
       who: 'Daniel',
-      which: 'B',
+      which: 2,
       hasWin: false,
       gain: 0,
     }
   }
   io.emit('gameState', dataSnippet);
 }
+
+console.log(game.getNewQuestion());

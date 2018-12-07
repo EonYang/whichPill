@@ -8,10 +8,17 @@ class TOOL {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
   }
 
-  FindIndexById(array, idValue) {
+  FindIndexByCookie(array, cookie) {
     let index = array.map(function(e) {
-      return e.id;
-    }).indexOf(idValue);
+      return e.cookie;
+    }).indexOf(cookie);
+    return index;
+  }
+
+  FindIndexBySocket(array, socketId) {
+    let index = array.map(function(e) {
+      return e.socketId;
+    }).indexOf(socketId);
     return index;
   }
 
@@ -33,10 +40,10 @@ class TOOL {
   }
 
   RanTest(para1, para2 = undefined) {
-      let min = para2 === undefined ? 0 : para1;
-      let max = para2 === undefined ? para1 : para2;
-      let randy = Math.floor(Math.random() * (max - min)) + min;
-      return randy
+    let min = para2 === undefined ? 0 : para1;
+    let max = para2 === undefined ? para1 : para2;
+    let randy = Math.floor(Math.random() * (max - min)) + min;
+    return randy
   }
 
   isInArray(value, array) {
@@ -44,12 +51,12 @@ class TOOL {
   }
 
   Constrain(num, min, max) {
-    num = num >= max
-      ? max
-      : num;
-    num = num <= min
-      ? min
-      : num;
+    num = num >= max ?
+      max :
+      num;
+    num = num <= min ?
+      min :
+      num;
     return num
   }
 

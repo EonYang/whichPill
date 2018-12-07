@@ -8,7 +8,8 @@
 ```
 {
   name:'Yang',
-  Role:'player'
+  role:'player',
+  cookie: ''
 }
 // another role is 'audience'
 ```
@@ -31,7 +32,7 @@
 
 ```{
   who:'Daniel',
-  choice:'a',
+  choice:1,
 
 }
 ```
@@ -57,7 +58,7 @@
 
         {
           gameState: 'inProgress',
-          Scores:[{name:'', eachRound:[23,0,15,22]}],
+          scores:[{name:'', eachRound:[23,0,15,22]}],
           round: 4,
           whosTurn:'Daniel',
           questions: [{
@@ -84,3 +85,7 @@
       who:'daniel',
       text:'asdjkfhasjkhdfjkhasdf'
     }
+
+#### gameResetted
+
+nodata
