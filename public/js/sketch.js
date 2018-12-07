@@ -7,15 +7,12 @@ let data = {
 };
 
 socket.on('connect', function() {
-    console.log("I am connected: " + socket.id);
+    console.log("You are onnected: " + socket.id);
 });
 
 socket.on('disconncted', function() {
     socket.emit('disconnected', socket.id);
 });
-
-
-
 
 var searchButton = $("#button-search");
 var textField = $("#search")[0];
@@ -31,14 +28,6 @@ var illustrationHolders = [
 let wordCount;
 let allMessage;
 
-// Create a stylesheet
-var sheet = (function () {
-    var style = document.createElement("style");
-    style.appendChild(document.createTextNode(""));
-    document.head.appendChild(style);
-    return style.sheet;
-})();
-
 $(window).load(function () {
     centerContent();
 });
@@ -47,14 +36,16 @@ $(window).resize(function () {
     centerContent();
 });
 
-document.getElementById("button-search").addEventListener("click", function(){
+// Button listener
+$("#button-next")[0].addEventListener("click", function(){
     if ($("#input-4").val().trim().length === 0) {
         textField.classList.add("input__label--error");
         setTimeout(function () {
             textField.classList.remove("input__label--error");
         }, 300);
     } else {
-        nameAndRole.name = document.getElementById("button-search").innerHTML;
+        // Change the page
+        nameAndRole.name = $("#input-4").val();
         socket.emit('setNameAndRole', nameAndRole);
     }
 });
