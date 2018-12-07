@@ -75,6 +75,8 @@
             }
         }
 
+        // states:  'prep', 'inprogress', 'ended'
+
 #### newChat
 
     // to all
