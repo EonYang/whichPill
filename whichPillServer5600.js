@@ -1,4 +1,5 @@
 const tool = require('./tool.js');
+const game = require('./game.js');
 const express = require('express');
 const port = 5600;
 const ioPort = 5600;
