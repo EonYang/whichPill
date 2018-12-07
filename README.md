@@ -5,6 +5,13 @@
 ### Client to Server
 
 #### setNameAndRole
+```
+{
+  name:'Yang',
+  Role:'player'
+}
+// another role is 'audience'
+```
 
 #### sendCookie
 

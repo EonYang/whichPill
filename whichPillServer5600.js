@@ -15,6 +15,35 @@ let data = {};
 const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
+
+  socket.on('setNameAndRole'function(data) {
+    console.log(JSON.stringify(data));
+  });
+
+  socket.on('sendCookie'function(data) {
+    console.log(JSON.stringify(data));
+  });
+
+  socket.on('resetGame'function() {
+    console.log('game Resetted');
+  });
+
+  socket.on('startGame'function() {
+    console.log('game startted');
+  });
+
+  socket.on('makeChoice'function(data) {
+    console.log(JSON.stringify(data));
+  });
+
+  socket.on('sendChat'function(data) {
+    console.log(JSON.stringify(data));
+  });
+
+  socket.on('setEndRound'function(data) {
+    console.log(JSON.stringify(data));
+  });
+
 });
 
 
@@ -24,8 +53,8 @@ setInterval(sendChatSnippet, 3000, );
 
 function sendChatSnippet() {
   let dataSnippet = {
-    who:'daniel',
-    text:'asdjkfhasjkhdfjkhasdf'
+    who: 'daniel',
+    text: 'asdjkfhasjkhdfjkhasdf'
   }
   io.emit('newChat', dataSnippet);
 }
