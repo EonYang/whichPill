@@ -1,4 +1,4 @@
-const tool = require('tool.js');
+const tool = require('./tool.js');
 const express = require('express');
 const port = 5600;
 const ioPort = 5600;
