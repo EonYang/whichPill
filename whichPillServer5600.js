@@ -16,31 +16,31 @@ const web = io.of('/');
 web.on('connection', function(socket) {
   console.log(`An player ${socket.id} connected`);
 
-  socket.on('setNameAndRole'function(data) {
+  socket.on('setNameAndRole', function(data) {
     console.log(JSON.stringify(data));
   });
 
-  socket.on('sendCookie'function(data) {
+  socket.on('sendCookie', function(data) {
     console.log(JSON.stringify(data));
   });
 
-  socket.on('resetGame'function() {
+  socket.on('resetGame', function() {
     console.log('game Resetted');
   });
 
-  socket.on('startGame'function() {
+  socket.on('startGame', function() {
     console.log('game startted');
   });
 
-  socket.on('makeChoice'function(data) {
+  socket.on('makeChoice', function(data) {
     console.log(JSON.stringify(data));
   });
 
-  socket.on('sendChat'function(data) {
+  socket.on('sendChat', function(data) {
     console.log(JSON.stringify(data));
   });
 
-  socket.on('setEndRound'function(data) {
+  socket.on('setEndRound', function(data) {
     console.log(JSON.stringify(data));
   });
 

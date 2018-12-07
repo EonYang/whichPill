@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Noto+Serif+JP|Open+Sans" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
-    <!-- <script type="text/javascript" src="../whichPillServer5600.js"></script> -->
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <title>Which Pill</title>
 </head>
 
@@ -23,34 +23,18 @@
                 <input class="input__field input__field--hoshi" type="text" id="input-4" />
                 <label class="input__label input__label--hoshi input__label--hoshi-color-0" for="input-4">
                     <span class="input__label-content input__label-content--hoshi txt-rotate" data-period="2000"
-                        data-rotate='[ "Daniel", "Yang", "Kelsey", "Tarun", "Greg", "Rebecca", "Youjin"]'></span>
+                        data-rotate='[ "Carol", "Yang", "Kelsey", "Tarun", "Greg", "Rebecca", "Youjin", "Francesca", "Jordan", "Poe", "Keerthana", "Heng"]'></span>
                 </label>
             </span>
         </div>
         <div class="button">
             <button id="button-search" type="button" class="btn">Enter</button>
         </div>
-        <div id="chart">
-            <div class="notes">
-                <span class="notes notes--count"></span>
-            </div>
-            <div class="barHolder">
-                
-            </div>
-        </div>
     </div>
-    <div class="desc">
-            <div class="illustrations--header"></div>
-            <div class="illustrations--paragraph"></div>
-        </div>
-    <div id="footer"></div>
 
     <script src="js/sketch.js"></script>
-
-    <!-- Detect if the input field is filled -->
     <script src="js/classie.js"></script>
     <script src="js/text-rotate.js"></script>
-
 </body>
 
 </html>

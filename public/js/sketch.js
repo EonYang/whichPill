@@ -1,17 +1,21 @@
-// let socket = io();
-// let data = {
-// };
+let socket = io('/');
+let nameAndRole = {
+    name: "",
+    role: ""
+};
+let data = {
+};
 
-// socket.on('connect', function() {
-//     console.log("I am connected: " + socket.id);
-// });
+socket.on('connect', function() {
+    console.log("I am connected: " + socket.id);
+});
 
-// socket.on('disconncted', function() {
-//     socket.emit('disconnected', socket.id);
-// });
+socket.on('disconncted', function() {
+    socket.emit('disconnected', socket.id);
+});
 
 
-// socket.emit('event', data);
+
 
 var searchButton = $("#button-search");
 var textField = $("#search")[0];
@@ -24,10 +28,8 @@ var illustrationHolders = [
     [0, 2]
 ];
 
-let addressData;
 let wordCount;
 let allMessage;
-let intervalID = "";
 
 // Create a stylesheet
 var sheet = (function () {
@@ -51,6 +53,9 @@ document.getElementById("button-search").addEventListener("click", function(){
         setTimeout(function () {
             textField.classList.remove("input__label--error");
         }, 300);
+    } else {
+        nameAndRole.name = document.getElementById("button-search").innerHTML;
+        socket.emit('setNameAndRole', nameAndRole);
     }
 });
 
@@ -95,13 +100,6 @@ function bars() {
         }
     });
 
-// function bars(length, date, presidentName) {
-    // count = allMessage.wordCount.filter((data) => {
-    //     if (data !== 0) {
-    //         return data;
-    //     }
-    // });
-    // presidentName = $(".input__field")[0].value;
     var bars = $(".barHolder")[0];
     var illustrations = $(".illustrationsHolder")[0];
 
