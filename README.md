@@ -9,6 +9,13 @@
 #### sendCookie
 
 ```
+'cookie string'
+
+```
+
+#### resetGame
+
+```
 
 ```
 
@@ -20,25 +27,28 @@
 
 #### makeChoice
 
-```
+```{
+  who:'Daniel',
+  choice:'a',
+
+}
 
 ```
 
 #### sendChat
 
-```
-
-```
-
-#### sendChat
-
-```
+```{
+  who:'Daniel',
+  text:'asdhjfjksadfjka',
+}
 
 ```
 
 #### setEndRound
 
-```
+```{
+  endRound:7
+}
 
 ```
 
@@ -48,9 +58,9 @@
 
         {
           gameState: 'inProgress',
-          round: 2,
-          whosTurn:'Daniel',
           Scores:[{name:'',sum:2, eachRound:[23,0,15,22]}],
+          round: 4,
+          whosTurn:'Daniel',
           questions: [{
             chance: 0.23;
             value: 125
@@ -58,14 +68,18 @@
               chance: 0.23;
               value: 125
             }]
+            lastTurn{
+              who:'Daniel',
+              which:'B',
+              hasWin: false,
+              gain:0,
+            }
         }
 
 #### newChat
 
     // to all
-
-### newQuestion
-
-```
-
-```
+    {
+      who:'daniel',
+      text:'asdjkfhasjkhdfjkhasdf'
+    }
