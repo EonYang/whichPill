@@ -7,7 +7,7 @@ const server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
 
-const io = require('socket.io').listen(ioPort);
+const io = require('socket.io').listen(server);
 
 
 let data = {};
@@ -18,7 +18,17 @@ web.on('connection', function(socket) {
 });
 
 
-setInterval(5000, sendDataSnippet);
+setInterval(sendDataSnippet, 5000, );
+
+setInterval(sendChatSnippet, 3000, );
+
+function sendChatSnippet() {
+  let dataSnippet = {
+    who:'daniel',
+    text:'asdjkfhasjkhdfjkhasdf'
+  }
+  io.emit('newChat', dataSnippet);
+}
 
 function sendDataSnippet() {
   let dataSnippet = {
@@ -52,5 +62,5 @@ function sendDataSnippet() {
       gain: 0,
     }
   }
-  socket.emit('gameState', dataSnippet);
+  io.emit('gameState', dataSnippet);
 }
