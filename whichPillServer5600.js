@@ -77,9 +77,10 @@ setInterval(function() {
 setInterval(sendChatSnippet, 10000, );
 
 function sendChatSnippet() {
+  let people = ['Daniel', 'kelsey', 'Jordan', 'Lee', 'Yang'];
   let dataSnippet = {
-    who: 'daniel',
-    text: 'asdjkfhasjkhdfjkhasdf'
+    who: people[Math.floor(tool.Random(5))],
+    text: tool.CreateId()
   }
   io.emit('newChat', dataSnippet);
 }
