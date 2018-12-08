@@ -32,11 +32,21 @@ class GAME {
     } else {
       console.log(`this is a new user`);
     }
-
   }
 
-  userOffline(userSocketId) {
-
+  userLeavesGame(userSocketId) {
+    let userIndex = tool.FindIndexBySocket(this.users, userSocketId);
+    console.log(`player ${this.users[userIndex].name} left game,`)
+    // in prep state, if user left, he's gone.
+    if (this.state == 'prep') {
+      console.log(`removed his since the game has not started`);
+      this.users.splice(userIndex, 1);
+    } else if (this.state == 'inProgress') {
+      console.log(`game in inProgress, marked him as offline.`);
+      this.users[userIndex].online = false;
+    } else {
+      console.log(`who cares, game ended anyway`);
+    }
   }
 
   addUser(name, socketId, role, cookie) {
@@ -78,19 +88,32 @@ class GAME {
 
   nextTurn() {
     let hasEveryonePlayed = true;
+    let lastIndex = -1;
     for (var i = 0; i < this.users.length; i++) {
       if (!this.users[i].hasPlayedInThisRound) {
+        lastIndex = i;
         this.currentQuestion = this.getNewQuestion();
         this.whosTurn = {
           name: this.users[i].name,
           socketId: this.users[i].socketId
-        }
+        };
+
         hasEveryonePlayed = false;
         console.log(`new turn, ${this.users[i].name}'s turn'`);
         console.log(`new question: ${JSON.stringify(this.currentQuestion)}`);
         break;
       }
     }
+
+    // if he is offline, make a choice for him
+    if (lastIndex >= 0) {
+      if (!this.users[lastIndex].online) {
+        let choice = Math.random() > 0.5 ? 0 : 1;
+        console.log(`${this.users[lastIndex].name} is offline, we made a random choice for him`);
+        this.storeUserChoice(this.users[i].socketId, choice);
+      }
+    }
+
     if (hasEveryonePlayed) {
       this.nextRound();
     }

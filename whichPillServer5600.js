@@ -61,6 +61,10 @@ web.on('connection', function(socket) {
     console.log(JSON.stringify(data));
     game.setEndRound(data);
   });
+
+  socket.on('disconnected', function() {
+    game.userLeavesGame(socket.id);
+  })
 });
 
 
@@ -87,7 +91,12 @@ var testFunctions = [
   function() {
     game.addUser('yang', '111111', 'player', 'hajkshdfkjhskjdhfkjhk');
     game.addUser('Jordan', '222222', 'player', 'ashjkdfhjdfhjkshd');
-    game.addUser('bitch', '333333', 'player', 'ashkjdfkjhsdkf');
+    game.addUser('bitch', '333333', 'player', 'adasdasdasd3e1das');
+    game.addUser('kelsey', '444444', 'player', '123asdasdasd');
+    game.addUser('Daniel', '555555', 'player', 'sdjfskhdkjfh');
+  },
+  function() {
+    game.userLeavesGame('555555');
   },
   function() {
     game.startGame();
@@ -102,7 +111,13 @@ var testFunctions = [
     game.storeUserChoice('333333', 1);
   },
   function() {
+    game.storeUserChoice('444444', 0);
+  },
+  function() {
     game.whoIsTakingLead();
+  },
+  function() {
+    game.userLeavesGame('444444');
   },
   function() {
     game.storeUserChoice('111111', 0);
