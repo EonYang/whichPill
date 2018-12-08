@@ -129,7 +129,7 @@ class GAME {
       hasHugeBackFire = 1;
     }
 
-    let backfire1 = -Math.floor(Math.random() * 100) - Math.floor(Math.random() * 1000) * hasHugeBackFire;
+    let backfire1 = -Math.floor(Math.random() * 30) - Math.floor(Math.random() * 300) * hasHugeBackFire;
     let backfire2 = 0;
     let util1 = 20 + Math.random() * 10;
     let util2 = 20 + Math.random() * 10;
