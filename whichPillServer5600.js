@@ -64,9 +64,13 @@ web.on('connection', function(socket) {
 });
 
 
-setInterval(sendDataSnippet, 5000, );
+setTimeout(runTestData, 2000);
 
-setInterval(sendChatSnippet, 3000, );
+setInterval(function() {
+  io.emit('gameState', game.getGameData());
+}, 5000, );
+
+setInterval(sendChatSnippet, 10000, );
 
 function sendChatSnippet() {
   let dataSnippet = {
@@ -76,39 +80,80 @@ function sendChatSnippet() {
   io.emit('newChat', dataSnippet);
 }
 
-function sendDataSnippet() {
-  let dataSnippet = {
-    gameState: 'inProgress',
-    scores: [{
-      name: 'Daniel',
-      eachRound: [23, 0, 15, 22, 0]
-    }, {
-      name: 'Kelsey',
-      eachRound: [25, 122, 15, 33]
-    }, {
-      name: 'Jordan',
-      eachRound: [234, 0, 151, 222]
-    }, {
-      name: 'Bitch',
-      eachRound: [23, 130, 55, 32]
-    }],
-    round: 4,
-    whosTurn: 'Kelsey',
-    questions: [{
-      chance: 0.23,
-      value: 125
-    }, {
-      chance: 0.23,
-      value: 125
-    }],
-    lastTurn: {
-      who: 'Daniel',
-      which: 2,
-      hasWin: false,
-      gain: 0,
-    }
+var testFunctions = [
+  function() {
+    game.resetGame();
+  },
+  function() {
+    game.addUser('yang', '111111', 'player', 'hajkshdfkjhskjdhfkjhk');
+    game.addUser('Jordan', '222222', 'player', 'ashjkdfhjdfhjkshd');
+    game.addUser('bitch', '333333', 'player', 'ashkjdfkjhsdkf');
+  },
+  function() {
+    game.startGame();
+  },
+  function() {
+    game.storeUserChoice('111111', 1);
+  },
+  function() {
+    game.storeUserChoice('222222', 0);
+  },
+  function() {
+    game.storeUserChoice('333333', 1);
+  },
+  function() {
+    game.whoIsTakingLead();
+  },
+  function() {
+    game.storeUserChoice('111111', 0);
+  },
+  function() {
+    game.storeUserChoice('222222', 1);
+  },
+  function() {
+    game.storeUserChoice('333333', 0);
+  },
+  function() {
+    game.whoIsTakingLead();
+  },
+  function() {
+    game.setEndRound(4);
+  },
+  function() {
+    game.storeUserChoice('111111', 1);
+  },
+  function() {
+    game.storeUserChoice('222222', 0);
+  },
+  function() {
+    game.storeUserChoice('333333', 1);
+  },
+  function() {
+    game.whoIsTakingLead();
+  },
+  function() {
+    game.storeUserChoice('111111', 0);
+  },
+  function() {
+    game.storeUserChoice('222222', 1);
+  },
+  function() {
+    game.storeUserChoice('333333', 0);
+  },
+  function() {
+    io.emit('gameState', game.getGameData());
+  },
+  function() {
+    game.whoIsTakingLead();
   }
-  io.emit('gameState', dataSnippet);
-}
+];
 
-console.log(game.getNewQuestion());
+
+function runTestData() {
+  let t = 0;
+  for (var i = 0; i < testFunctions.length; i++) {
+    t += 1000;
+    console.log(t);
+    setTimeout(testFunctions[i], t);
+  }
+}

@@ -1,5 +1,11 @@
 const tool = require('./tool.js');
 
+let riskyChanceBase = 10;
+let riskyChanceRandom = 20;
+let conservativeChanceBase = 85;
+let conservativeChanceRandom = 20;
+
+
 class GAME {
   constructor() {
     this.users = [];
@@ -41,14 +47,54 @@ class GAME {
       cookie: cookie,
       scores: [],
       online: true,
+      sum: 0,
       hasPlayedInThisRound: false,
     }
     this.users.push(data);
   }
 
+  startGame() {
+    this.state = 'inProgress';
+    this.nextRound();
+    console.log(`game started`);
+  }
+
+  nextRound() {
+    if (this.round < this.totalRound) {
+      this.round += 1;
+      console.log(`a new round, ${this.round}`);
+      for (var i = 0; i < this.users.length; i++) {
+        this.users[i].hasPlayedInThisRound = false;
+      }
+      this.nextTurn();
+    } else if (this.round == this.totalRound) {
+      this.gameEnd();
+    }
+  }
+
+  nextTurn() {
+    let hasEveryonePlayed = true;
+    for (var i = 0; i < this.users.length; i++) {
+      if (!this.users[i].hasPlayedInThisRound) {
+        this.currentQuestion = this.getNewQuestion();
+        this.whosTurn = {
+          name: this.users[i].name,
+          socketId: this.users[i].socketId
+        }
+        hasEveryonePlayed = false;
+        console.log(`new turn, ${this.users[i].name}'s turn'`);
+        console.log(`new question: ${JSON.stringify(this.currentQuestion)}`);
+        break;
+      }
+    }
+    if (hasEveryonePlayed) {
+      this.nextRound();
+    }
+  }
+
   getNewQuestion() {
     let hasHugeBackFire = 0;
-    if (Math.random() > 0.7) {
+    if (Math.random() > 0.8) {
       hasHugeBackFire = 1;
     }
 
@@ -56,8 +102,8 @@ class GAME {
     let backfire2 = 0;
     let util1 = 20 + Math.random() * 10;
     let util2 = 20 + Math.random() * 10;
-    let chance1 = (1 + (Math.floor(Math.random() * 10))) / 100;
-    let chance2 = (91 + (Math.floor(Math.random() * 10))) / 100;
+    let chance1 = (riskyChanceBase + (Math.floor(Math.random() * riskyChanceRandom))) / 100;
+    let chance2 = (conservativeChanceBase + (Math.floor(Math.random() * conservativeChanceRandom))) / 100;
     let value1 = Math.floor((util1 - backfire1) / chance1);
     let value2 = Math.floor((util2 - backfire2) / chance2);
 
@@ -75,70 +121,41 @@ class GAME {
 
   storeUserChoice(userSocket, choice) {
     let userIndex = tool.FindIndexBySocket(this.users, userSocket);
-    let user = this.users[index];
-    user.playedInThisTurn = true;
+    let user = this.users[userIndex];
+
+    console.log(`${user.name} made a choise `);
+
+    user.hasPlayedInThisRound = true;
     let q = this.currentQuestion;
     let roll = Math.random();
+    console.log(`rolled ${roll}`);
     let win = false;
     let gain = 0;
     if (q[choice].chance > roll) {
       gain = q[choice].value;
+      console.log(`wins ${gain}`);
     } else {
       gain = q[choice].backfire;
+      console.log(`doesn't win, lose ${gain}`);
     }
+
     this.lastTurn = {
       who: user.name,
       which: choice,
       hasWin: win,
       gain: gain,
     }
-    this.users[index].scores.push(gain);
-  }
 
-  nextTurn() {
-    this.currentQuestion = this.getNewQuestion();
-    let hasEveryonePlayed = true;
-    for (var i = 0; i < this.users.length; i++) {
-      if (!this.users[i].hasPlayedInThisRound) {
-        this.whosTurn = {
-          name: this.users[i].name,
-          socketId: this.users[i].socketId
-        }
-        hasEveryonePlayed = false;
-        break;
-      }
-    }
-
-    if (hasEveryonePlayed) {
-      this.nextRound();
-    }
-
-    console.log('new turn');
-    console.log('new question');
-    console.log(JSON.stringify(this.currentQuestion));
-    console.log(`new player's turn`);
-    console.log(JSON.stringify(this.whosTurn));
-    // save last choice made by user
-
-  }
-
-
-  nextRound() {
-    if (this.round < this.totalRound) {
-      this.round += 1;
-      for (var i = 0; i < this.users.length; i++) {
-        this.users[i].hasPlayedInThisRound = false;
-        this.nextTurn();
-      }
-    } else if (this.round == this.totalRound) {
-      this.gameEnd();
-    }
+    // console.log(`${this.lastTurn}`);
+    this.users[userIndex].scores.push(gain);
+    this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
+    this.nextTurn();
   }
 
   getGameData() {
     let data = {
       gameState: this.gameState,
-      scores: [],
+      users: [],
       round: this.round,
       whosTurn: this.whosTurn,
       questions: [this.currentQuestion],
@@ -146,12 +163,16 @@ class GAME {
     }
 
     for (var i = 0; i < this.users.length; i++) {
-      let score = {
+      let user = {
         name: this.users[i].name,
+        online: this.users[i].online,
         scores: this.users[i].scores,
       }
-      data.scores.push(score);
+      data.users.push(user);
     }
+    console.log(`send data to client`);
+
+    console.log(JSON.stringify(data));
     return data
   }
 
@@ -159,17 +180,9 @@ class GAME {
 
   }
 
-  startGame() {
-    // round = 1
-    this.nextRound();
-    // get 1st question
-    // get first player // next round did this for us
-    // gamestart in progress
-    this.state = 'inProgress';
-  }
-
   gameEnd() {
     this.state = 'ended';
+    console.log(`game has ended`);
   }
 
   resetGame() {
@@ -183,10 +196,25 @@ class GAME {
       name: '',
       socketId: '',
     }
+    console.log(`game has been resetted`);
   }
 
   setEndRound(num) {
     this.totalRound = num;
+    console.log(`new end round is ${num}`);
+  }
+
+  whoIsTakingLead() {
+    let bigestSum = -1;
+    let takingLead = '';
+    for (var i = 0; i < this.users.length; i++) {
+      console.log(`${this.users[i].name} : ${this.users[i].sum}`);
+      if (this.users[i].sum > bigestSum) {
+        bigestSum = this.users[i].sum;
+        takingLead = this.users[i].name;
+      }
+    }
+    console.log(`${takingLead} takes lead wich a sum of ${bigestSum}`);
   }
 }
 

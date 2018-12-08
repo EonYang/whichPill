@@ -5,14 +5,13 @@
 ### Client to Server
 
 #### setNameAndRole
-```
-{
-  name:'Yang',
-  role:'player',
-  cookie: ''
-}
-// another role is 'audience'
-```
+
+    {
+      name:'Yang',
+      role:'player',
+      cookie: ''
+    }
+    // another role is 'audience'
 
 #### sendCookie
 
@@ -58,7 +57,7 @@
 
         {
           gameState: 'inProgress',
-          scores:[{name:'', eachRound:[23,0,15,22]}],
+          users:[{name:'',online: true , scores:[23,0,15,22]}],
           round: 4,
           whosTurn:'Daniel',
           questions: [{
