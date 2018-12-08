@@ -40,23 +40,27 @@ class GAME {
   }
 
   addUser(name, socketId, role, cookie) {
-    let data = {
-      name: name,
-      socketId: socketId,
-      role: role,
-      cookie: cookie,
-      scores: [],
-      online: true,
-      sum: 0,
-      hasPlayedInThisRound: false,
+    if (this.state == 'prep') {
+      let data = {
+        name: name,
+        socketId: socketId,
+        role: role,
+        cookie: cookie,
+        scores: [],
+        online: true,
+        sum: 0,
+        hasPlayedInThisRound: false,
+      }
+      this.users.push(data);
     }
-    this.users.push(data);
   }
 
   startGame() {
-    this.state = 'inProgress';
-    this.nextRound();
-    console.log(`game started`);
+    if (this.state == 'prep') {
+      this.state = 'inProgress';
+      this.nextRound();
+      console.log(`game started`);
+    }
   }
 
   nextRound() {
@@ -120,36 +124,38 @@ class GAME {
   }
 
   storeUserChoice(userSocket, choice) {
-    let userIndex = tool.FindIndexBySocket(this.users, userSocket);
-    let user = this.users[userIndex];
+    if (this.state == 'inProgress') {
+      let userIndex = tool.FindIndexBySocket(this.users, userSocket);
+      let user = this.users[userIndex];
 
-    console.log(`${user.name} made a choise `);
+      console.log(`${user.name} made a choise `);
 
-    user.hasPlayedInThisRound = true;
-    let q = this.currentQuestion;
-    let roll = Math.random();
-    console.log(`rolled ${roll}`);
-    let win = false;
-    let gain = 0;
-    if (q[choice].chance > roll) {
-      gain = q[choice].value;
-      console.log(`wins ${gain}`);
-    } else {
-      gain = q[choice].backfire;
-      console.log(`doesn't win, lose ${gain}`);
+      user.hasPlayedInThisRound = true;
+      let q = this.currentQuestion;
+      let roll = Math.random();
+      console.log(`rolled ${roll}`);
+      let win = false;
+      let gain = 0;
+      if (q[choice].chance > roll) {
+        gain = q[choice].value;
+        console.log(`wins ${gain}`);
+      } else {
+        gain = q[choice].backfire;
+        console.log(`doesn't win, lose ${gain}`);
+      }
+
+      this.lastTurn = {
+        who: user.name,
+        which: choice,
+        hasWin: win,
+        gain: gain,
+      }
+
+      // console.log(`${this.lastTurn}`);
+      this.users[userIndex].scores.push(gain);
+      this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
+      this.nextTurn();
     }
-
-    this.lastTurn = {
-      who: user.name,
-      which: choice,
-      hasWin: win,
-      gain: gain,
-    }
-
-    // console.log(`${this.lastTurn}`);
-    this.users[userIndex].scores.push(gain);
-    this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
-    this.nextTurn();
   }
 
   getGameData() {
@@ -186,6 +192,7 @@ class GAME {
   }
 
   resetGame() {
+    this.users = [];
     this.state = 'prep';
     this.round = 0;
     this.totalRound = 5;
