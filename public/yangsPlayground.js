@@ -1,8 +1,5 @@
 let socket = io('/');
 
-
-
-
 socket.on('connect', function() {
     console.log("I am connected: " + socket.id);
 });

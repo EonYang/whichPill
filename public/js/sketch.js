@@ -3,18 +3,16 @@ let nameAndRole = {
     name: "",
     role: ""
 };
-let data = {
-};
+let data = {};
 
-socket.on('connect', function() {
-    console.log("You are onnected: " + socket.id);
+socket.on('connect', function () {
+    console.log("You are connected: " + socket.id);
 });
 
-socket.on('disconncted', function() {
+socket.on('disconncted', function () {
     socket.emit('disconnected', socket.id);
 });
 
-var searchButton = $("#button-search");
 var textField = $("#search")[0];
 var textLable = $("label.input__label.input__label--hoshi.input__label--hoshi-color-0")[0];
 var barCount = 4;
@@ -28,25 +26,30 @@ var illustrationHolders = [
 let wordCount;
 let allMessage;
 
-$(window).load(function () {
+$(window).on('load', function () {
     centerContent();
 });
-
-$(window).resize(function () {
+$(window).on('resize', function () {
     centerContent();
 });
 
 // Button listener
-$("#button-next")[0].addEventListener("click", function(){
+$("#button-next")[0].addEventListener("click", function () {
     if ($("#input-4").val().trim().length === 0) {
         textField.classList.add("input__label--error");
         setTimeout(function () {
             textField.classList.remove("input__label--error");
         }, 300);
     } else {
-        // Change the page
+        // Advance to role selection
         nameAndRole.name = $("#input-4").val();
-        socket.emit('setNameAndRole', nameAndRole);
+        $("#button-next")[0].innerHTML = "Okay";
+        $(".input")[0].classList.add("animated", "fadeOut");
+        $(".input")[0].style.animationDuration = "0.2s";
+        // if () {
+
+        //     socket.emit('setNameAndRole', nameAndRole);
+        // }
     }
 });
 
@@ -72,7 +75,7 @@ function reveal() {
 function bars() {
 
     var hoverHolder = $(".barHolder")[0];
-    
+
     hoverHolder.addEventListener("mouseover", function (e) {
         if (e.target && e.target.nodeName == "SPAN") {
             console.log("Hovered!")
@@ -108,38 +111,16 @@ function bars() {
     }
 }
 
-$('.barHolder').on('mousemove', function(e){
-    if (e.pageX+20 < ($(window).width())/4*3) {
+$('.barHolder').on('mousemove', function (e) {
+    if (e.pageX + 20 < ($(window).width()) / 4 * 3) {
         $('.desc').css({
-            left:  e.pageX + 20,
-            top:   e.pageY - 100
-         });
+            left: e.pageX + 20,
+            top: e.pageY - 100
+        });
     } else {
         $('.desc').css({
-            left:  e.pageX - 300,
-            top:   e.pageY - 100
-         });
+            left: e.pageX - 300,
+            top: e.pageY - 100
+        });
     }
 });
-
-
-function mapping(wordCount, max, min){
-    wordCount = wordCount.map((data) => {
-        let local_max = Math.max(...wordCount)
-        let local_min = Math.min(...wordCount)
-        
-        return (local_max-local_min) == 0? (max + min)/2:data/(local_max - local_min) * (max - min) + min
-    })
-
-    return wordCount
-}
-
-function changeOp(cnt){
-    let barName = '.bars--'+cnt
-    $(barName).css('opacity',1)
-    if(cnt-1 >= 0){
-        barName = '.bars--'+(cnt-1)
-        $(barName).css('opacity',0.5)
-    }
-
-}
