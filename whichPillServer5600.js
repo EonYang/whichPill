@@ -117,9 +117,6 @@ var testFunctions = [
     game.whoIsTakingLead();
   },
   function() {
-    game.userLeavesGame('444444');
-  },
-  function() {
     game.storeUserChoice('111111', 0);
   },
   function() {
@@ -129,6 +126,9 @@ var testFunctions = [
     game.storeUserChoice('333333', 0);
   },
   function() {
+    game.storeUserChoice('444444', 0);
+  },
+  function() {
     game.whoIsTakingLead();
   },
   function() {
@@ -136,6 +136,9 @@ var testFunctions = [
   },
   function() {
     game.storeUserChoice('111111', 1);
+  },
+  function() {
+    game.userLeavesGame('444444');
   },
   function() {
     game.storeUserChoice('222222', 0);

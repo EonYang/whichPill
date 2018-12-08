@@ -5,7 +5,6 @@ let riskyChanceRandom = 20;
 let conservativeChanceBase = 85;
 let conservativeChanceRandom = 20;
 
-
 class GAME {
   constructor() {
     this.users = [];
@@ -44,6 +43,11 @@ class GAME {
     } else if (this.state == 'inProgress') {
       console.log(`game in inProgress, marked him as offline.`);
       this.users[userIndex].online = false;
+      if (this.whosTurn.name == this.users[userIndex].name) {
+        let choice = Math.random() > 0.5 ? 0 : 1;
+        console.log(`${this.users[lastIndex].name} is offline, we made a random choice for him`);
+        this.storeUserChoice(this.users[i].socketId, choice);
+      }
     } else {
       console.log(`who cares, game ended anyway`);
     }
@@ -160,6 +164,7 @@ class GAME {
       let win = false;
       let gain = 0;
       if (q[choice].chance > roll) {
+        win = true;
         gain = q[choice].value;
         console.log(`wins ${gain}`);
       } else {
