@@ -1,8 +1,6 @@
+// Server
 let socket = io('/');
-let nameAndRole = {
-    name: "",
-    role: ""
-};
+
 let data = {};
 
 socket.on('connect', function () {
@@ -13,63 +11,85 @@ socket.on('disconncted', function () {
     socket.emit('disconnected', socket.id);
 });
 
+// Client
+let role = "empty";
+let nameAndRole = {
+    name: "",
+    role: "",
+    cookie: ""
+};
+let gameSatus = 0;
+
 var textField = $("#search")[0];
 var textLable = $("label.input__label.input__label--hoshi.input__label--hoshi-color-0")[0];
-var barCount = 4;
-var barHolders = [];
-var illustrationHolders = [
-    [0, 0],
-    [0, 1],
-    [0, 2]
-];
 
-let wordCount;
-let allMessage;
-
+// Center the main div and set cookies
 $(window).on('load', function () {
     centerContent();
+    // Generate cookie
+    new Fingerprint2().get(function(result, components) {
+        nameAndRole.cookie = result;
+    });
 });
+
 $(window).on('resize', function () {
     centerContent();
-});
-
-// Button listener
-$("#button-next")[0].addEventListener("click", function () {
-    if ($("#input-4").val().trim().length === 0) {
-        textField.classList.add("input__label--error");
-        setTimeout(function () {
-            textField.classList.remove("input__label--error");
-        }, 300);
-    } else {
-        // Advance to role selection
-        nameAndRole.name = $("#input-4").val();
-        $("#button-next")[0].innerHTML = "Okay";
-        $(".input")[0].classList.add("animated", "fadeOut");
-        $(".input")[0].style.animationDuration = "0.2s";
-        // if () {
-
-        //     socket.emit('setNameAndRole', nameAndRole);
-        // }
-    }
 });
 
 function centerContent() {
     var container = $('#home');
     var content = $('#main');
     content.css("left", (container.width() - content.width()) / 2);
-    content.css("top", ($(window).height() - content.height()) / 2 + 32);
+    content.css("top", ($(window).height() - content.height()) / 2 - 32);
 }
 
-// Callback function after valid search request
-function chart() {
-    reveal();
-    bars();
-}
+// Submit Button listener
+$("#button-next")[0].addEventListener("click", function () {
+    if ($("#input-4").val().trim().length === 0) {
+        textField.classList.add("input__label--error");
+        setTimeout(function () {
+            textField.classList.remove("input__label--error");
+        }, 300);
+    } else if (role == 0) {
+        $("#role")[0].classList.add("input__label--error");
+        setTimeout(function () {
+            $("#role")[0].classList.remove("input__label--error");
+        }, 300);
+    } else {
+        // Pass name and role value
+        nameAndRole.name = $("#input-4").val();
+        nameAndRole.role = role;
+        socket.emit('setNameAndRole', nameAndRole)
+        // Hide buttons and input
+        $(".input")[0].classList.add("animated", "fadeOut");
+        $(".input")[0].style.animationDuration = "0.2s";
+        $(".button")[0].classList.add("animated", "fadeOut");
+        $(".button")[0].style.animationDuration = "0.2s";
+        $(".description")[0].classList.add("animated", "fadeOut");
+        $(".description")[0].style.animationDuration = "0.2s";
+        $("#role")[0].classList.add("animated", "fadeOut");
+        $("#role")[0].style.animationDuration = "0.2s";
+    }
+});
 
-// Reveal the chart
-function reveal() {
-    $(".notes").css("visibility", "visible");
-}
+// Role Button listener
+$("#button-player")[0].addEventListener("click", function () {
+    if (role == "empty" || role == "Audience") {
+        $("#button-player").attr("src", "assets/player_tick.png");
+        $("#button-player")[0].style.borderColor = "#083D77";
+        $("#button-player")[0].style.borderWidth = "2px";
+        $("#button-audience").attr("src", "assets/audience.png");
+        role = "Player";
+    }
+});
+
+$("#button-audience")[0].addEventListener("click", function () {
+    if (role == "empty" || role == "Player") {
+        $("#button-audience").attr("src", "assets/audience_tick.png");
+        $("#button-player").attr("src", "assets/player.png");
+        role = "Audience";
+    }
+});
 
 // Creating visulization bars
 function bars() {
@@ -124,3 +144,11 @@ $('.barHolder').on('mousemove', function (e) {
         });
     }
 });
+
+// Set Cookie
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}

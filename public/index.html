@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Noto+Serif+JP|Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="js/fingerPrint2.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <title>Which Pill</title>
 </head>
@@ -18,13 +20,14 @@
     <header id="header">
         <!-- <img class="icon-pill" src="assets/pill.svg"> -->
         <h1>Which Pill?</h1>
-        <div class="description">Please select your roles and tell us who you are.</div>
-        <div id="role">
-                <div class="audience"></div>
-                <div class="player"></div>
-            </div>
+
     </header>
     <div id="main">
+        <div class="description">Please select your role and tell us who you are</div>
+        <div id="role">
+            <input class="player" id="button-player" type="image" name="imgbtn" src="assets/player.png">
+            <input class="audience" id="button-audience" type="image" name="imgbtn" src="assets/audience.png">
+        </div>
         <div id="search">
             <span class="input input--hoshi">
                 <input class="input__field input__field--hoshi" type="text" id="input-4" />
@@ -39,7 +42,7 @@
         </div>
     </div>
 
-    <script src="js/sketch.js"></script>
+    <script src="js/index.js"></script>
     <script src="js/classie.js"></script>
     <script src="js/text-rotate.js"></script>
 </body>
