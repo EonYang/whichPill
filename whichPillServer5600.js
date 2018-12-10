@@ -26,7 +26,7 @@ web.on('connection', function(socket) {
   socket.on('setNameAndRole', function(data) {
     console.log(JSON.stringify(data));
     let name = data.name;
-    let socketId = data.socket.id;
+    let socketId = socket.id;
     let role = data.role;
     let cookie = data.cookie;
     game.addUser(name, socketId, role, cookie);
@@ -41,7 +41,7 @@ web.on('connection', function(socket) {
   });
 
   socket.on('startGame', function() {
-    console.log('game startted');
+    console.log('game started');
     game.startGame();
     io.emit('gameState', game.getGameData());
   });
@@ -171,7 +171,7 @@ var testFunctions = [
 function runTestData() {
   let t = 0;
   for (var i = 0; i < testFunctions.length; i++) {
-    t += 1000;
+    t += 5000;
     console.log(t);
     setTimeout(testFunctions[i], t);
   }

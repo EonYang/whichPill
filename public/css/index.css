@@ -287,8 +287,25 @@ button {
 	margin-left: 36px;
 	margin-right: 36px;
 	background: white;
-	box-shadow: 0px 4px 30px -9px rgba(51,51,51,0.75);
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
 	display: inline-block;
+	border-style: solid;
+    border-color: white;
+    border-width: 4px;
+}
+
+.player-tick {
+	width: 400px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: 36px;
+	margin-right: 36px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: inline-block;
+	border-style: solid;
+    border-color: #083D77;
+    border-width: 4px;
 }
 
 .audience {
@@ -298,8 +315,25 @@ button {
 	margin-left: 36px;
 	margin-right: 36px;
 	background: white;
-	box-shadow: 0px 4px 30px -9px rgba(51,51,51,0.75);
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
 	display: inline-block;
+	border-style: solid;
+    border-color: white;
+    border-width: 4px;
+}
+
+.audience-tick {
+	width: 400px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: 36px;
+	margin-right: 36px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: inline-block;
+	border-style: solid;
+    border-color: #083D77;
+    border-width: 4px;
 }
 
 .icon-pill {
@@ -323,6 +357,131 @@ button {
 	margin-bottom: 40px;
 }
 
+.description-waiting {
+	position: relative;
+	height: 40px;
+	text-align: center;
+	font-size: 3em;
+	font-family: 'Montserrat', sans-serif;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-bottom: 40px;
+}
+
+.description-chat {
+	position: relative;
+	height: 40px;
+	text-align: center;
+	font-size: 1.98em;
+	font-family: 'Montserrat', sans-serif;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-bottom: 160px;
+}
+
+#result-a{
+	position: relative;
+	height: 40px;
+	text-align: center;
+	font-size: 3em;
+	font-family: 'Montserrat', sans-serif;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-bottom: 40px;
+}
+
+#result-b{
+	position: relative;
+	height: 40px;
+	text-align: center;
+	font-size: 3em;
+	font-family: 'Montserrat', sans-serif;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-weight: bold;
+	margin-bottom: 40px;
+}
+
+.choice-a {
+	width: 800px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 72px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: block;
+	border-style: solid;
+    border-color: white;
+    border-width: 4px;
+}
+
+.choice-a-tick {
+	width: 800px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 72px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: block;
+	border-style: solid;
+    border-color: #083D77;
+    border-width: 4px;
+}
+
+.choice-b {
+	width: 800px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 180px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: block;
+	border-style: solid;
+    border-color: white;
+    border-width: 4px;
+}
+
+.choice-b-tick {
+	width: 800px;
+	height: 400px;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 180px;
+	background: white;
+	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	display: block;
+	border-style: solid;
+    border-color: #083D77;
+    border-width: 4px;
+}
+
+.button-confirm {
+	transition: background-color 0.2s ease;
+	border-radius: 100px;
+	background-color: #083D77;
+	color: #fff;
+	box-shadow: 0px 14px 22px -4px rgba(8, 61, 119, 0.80);
+}
+
+.image {
+	width: 300px;
+	height: 300px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 180px;
+}
+
 button {
 	background-color: #000;
 	border: none;
@@ -342,22 +501,6 @@ button:focus {
 	text-align: center;
 }
 
-.button--back {
-	transition: background-color 0.2s ease;
-	border-radius: 100px;
-	background-color: rgba(22, 72, 126, 0.5);
-	color: #fff;
-	box-shadow: 0px 14px 22px -4px rgba(22, 72, 126, 0.5);
-}
-
-.button--back--active {
-	transition: background-color 0.2s ease;
-	border-radius: 100px;
-	background-color: #083D77;
-	color: #fff;
-	box-shadow: 0px 14px 22px -4px rgba(22, 72, 126, 0.5);
-}
-
 .button--next {
 	transition: background-color 0.2s ease;
 	border-radius: 100px;
@@ -366,50 +509,12 @@ button:focus {
 	box-shadow: 0px 14px 22px -4px rgba(8, 61, 119, 0.80);
 }
 
-.barHolder {
-	/* top: 100px; */
-	position: relative;
-	text-align: center;
-	/* border: solid red;
-	border-width: 4px; */
-	margin-bottom: 40px;
-}
-
-.bars {
-	background-color: white;
-	width: 10px;
-	height: 160px;
-	border-radius: 50px;
-	display: inline-block;
-	margin-left: 25px;
-	margin-right: 25px;
-	margin-bottom: 40px;
-	vertical-align: middle;
-	cursor: pointer;
-	opacity: 1;
-}
-
-.bars:hover {
-	opacity: .5;
-	transition: opacity 0.4s;
-}
-
-.illustrations--header {
-	text-align: left;
-	font-style: italic;
-	font-weight: bold;
-	font-family: "Noto Serif JP", serif;
-	font-size: 10px;
-	line-height: 1.3;
-	margin-bottom: 10px;
-}
-
-.illustrations--paragraph {
-	text-align: left;
-	font-family: "Noto Serif JP", serif;
-	font-size: 12px;
-	font-weight: 200;
-	line-height: 1.3;
+.button--send {
+	transition: background-color 0.2s ease;
+	border-radius: 100px;
+	background-color: #083D77;
+	color: #fff;
+	box-shadow: 0px 14px 22px -4px rgba(8, 61, 119, 0.80);
 }
 
 .input {

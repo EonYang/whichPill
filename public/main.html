@@ -2,14 +2,29 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="Author" content="Yang Yang, Heng Tang" />
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <meta name="Author" content="James Alan Heng" />
+    <meta name="viewport" content="width=1024" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7, IE=9" />
+    <meta name="Description" content="" />
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Noto+Serif+JP|Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <title>Which Pill</title>
 </head>
 
-<body>
+<body id="home">
+        <header id="header">
+            <h1>Which Pill?</h1>
     
-</body>
+        </header>
+        <div id="main">
+                <img id="icon-main" src="assets/pill.png">
+            <div class="description-waiting-main animated infinite flash slower">Waiting for players and audiences to be seated...</div>
+        </div>
+    
+        <script src="js/main.js"></script>
+    </body>
 
 </html>
