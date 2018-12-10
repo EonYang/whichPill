@@ -11,7 +11,6 @@ let conservativeChanceRandom = 20;
 
 class GAME {
   constructor() {
-    this.gameState = 'prep';
     this.users = [];
     this.state = 'prep';
     this.round = 0;
@@ -192,7 +191,7 @@ class GAME {
 
   getGameData() {
     let data = {
-      gameState: this.gameState,
+      gameState: this.state,
       users: [],
       round: this.round,
       whosTurn: this.whosTurn,
@@ -206,6 +205,7 @@ class GAME {
         online: this.users[i].online,
         scores: this.users[i].scores,
         sum: this.users[i].sum,
+        socket: this.users[i].socketId,
       }
       data.users.push(user);
     }
