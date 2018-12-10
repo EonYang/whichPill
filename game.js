@@ -45,8 +45,8 @@ class GAME {
       this.users[userIndex].online = false;
       if (this.whosTurn.name == this.users[userIndex].name) {
         let choice = Math.random() > 0.5 ? 0 : 1;
-        console.log(`${this.users[lastIndex].name} is offline, we made a random choice for him`);
-        this.storeUserChoice(this.users[i].socketId, choice);
+        console.log(`${this.users[userIndex].name} is offline, we made a random choice for him`);
+        this.storeUserChoice(this.users[userIndex].socketId, choice);
       }
     } else {
       console.log(`who cares, game ended anyway`);
@@ -182,6 +182,7 @@ class GAME {
       // console.log(`${this.lastTurn}`);
       this.users[userIndex].scores.push(gain);
       this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
+      this.whoIsTakingLead();
       this.nextTurn();
     }
   }

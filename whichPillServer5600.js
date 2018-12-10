@@ -12,7 +12,7 @@ const server = require('http').createServer(app).listen(port, function() {
 const io = require('socket.io').listen(server);
 
 
-let gameData = {};
+let ai = false;
 
 const web = io.of('/');
 web.on('connection', function(socket) {
@@ -41,8 +41,11 @@ web.on('connection', function(socket) {
   });
 
   socket.on('startGame', function() {
-    console.log('game started');
+    console.log('starting game');
     game.startGame();
+    if (ai) {
+      aiLeaveGame();
+    }
     io.emit('gameState', game.getGameData());
   });
 
@@ -65,16 +68,34 @@ web.on('connection', function(socket) {
   socket.on('disconnected', function() {
     game.userLeavesGame(socket.id);
   })
+
+  socket.on('enableAI', function () {
+    insertAI();
+    console.log('AI added');
+    console.log(JSON.stringify(game.users));
+  })
 });
 
+function insertAI() {
+  game.addUser('yang', '111111', 'player', 'hajkshdfkjhskjdhfkjhk');
+  game.addUser('Jordan', '222222', 'player', 'ashjkdfhjdfhjkshd');
+  game.addUser('bitch', '333333', 'player', 'adasdasdasd3e1das');
+  ai = true;
+}
 
-setTimeout(runTestData, 2000);
+function aiLeaveGame() {
+  game.userLeavesGame('111111');
+  game.userLeavesGame('222222');
+  game.userLeavesGame('333333');
+}
 
-setInterval(function() {
-  io.emit('gameState', game.getGameData());
-}, 5000, );
-
-setInterval(sendChatSnippet, 10000, );
+// setTimeout(runTestData, 2000);
+//
+// setInterval(function() {
+//   io.emit('gameState', game.getGameData());
+// }, 5000, );
+//
+// setInterval(sendChatSnippet, 10000, );
 
 function sendChatSnippet() {
   let people = ['Daniel', 'kelsey', 'Jordan', 'Lee', 'Yang'];
