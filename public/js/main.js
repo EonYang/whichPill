@@ -13,7 +13,9 @@ socket.on('disconncted', function () {
 
 socket.on('gameState', function (data) {
     gameData = data;
-    updateScreen(gameData);
+    if (gameData.gameState != "prep") {
+        updateScreen(gameData);
+    }
 
     var jqueryDom = createScreenbullet("Yang yang has a little lamb.");
     addInterval(jqueryDom);
