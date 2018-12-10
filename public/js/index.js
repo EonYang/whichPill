@@ -60,6 +60,8 @@ socket.on('gameState', function (data) {
                 }
             });
         }
+    } else if (gameData.gameState == "ended") {
+        endGame(gameData);
     }
     console.log(data);
 });
@@ -165,6 +167,34 @@ function othersTurn(whosTurn) {
 
 function othersTurnRefreshName(whosTurn) {
     $(".description-waiting")[0].innerHTML = `Stay calm and wait for ${whosTurn}...`;
+}
+
+function endGame(data) {
+    let maxSum = data.users[0].sum;
+    let maxIndex;
+    for (i = 0; i < 4; i++) {
+        if (data.users[i].sum > maxSum) {
+            maxIndex = i;
+        }
+    }
+    
+
+    // Remove old elements
+    while ($("#main")[0].firstChild) {
+        $("#main")[0].removeChild($("#main")[0].firstChild);
+    }
+
+    // Add new elements
+    var newIcon = $("<img>");
+    $("#main").append(newIcon);
+    $("#main")[0].firstChild.src = "assets/pill.png";
+    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+
+    var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
+    $("#main").append(newDiv);
+    $("#main")[0].childNodes[1].classList.add("description", "animated", "fadeIn", "slow");
+
+    centerContent();
 }
 
 function myComment() {
