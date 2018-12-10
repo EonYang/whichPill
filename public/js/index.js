@@ -7,9 +7,13 @@ let nameAndRole = {
     cookie: ""
 };
 let gameSatus = 0; // 0: Preparing; 1: Started; 2: End
-let refresh = 0;
+let playerRefresh = 1;
+let decision = {
+    who: "",
+    choice: 2
+};
 
-var textField = $("#search")[0];
+let textField = $("#search")[0];
 
 // Server
 socket.on('connect', function () {
@@ -26,42 +30,21 @@ socket.on('startGame', function () {
 
 socket.on('gameState', function (data) {
     gameData = data;
-    let decision = {
-        who: "",
-        choice: 0
-    };
+
     decision.who = gameData.whosTurn.name;
 
-    if (gameData.gameState != "prep") {
+    if (gameData.gameState == "inProgress") {
         if (nameAndRole.role == "Player") {
-            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase()) {
-                myTurn(gameData.questions);
-
-                // Listen to decisions
-                $("#choice-a")[0].addEventListener("click", function () {
-                    decision.choice = 1;
-                    $("#choice-a")[0].classList.add("choice-a-tick");
-                    $("#choice-b")[0].classList.remove("choice-b-tick");
-                });
-
-                $("#choice-b")[0].addEventListener("click", function () {
-                    decision.choice = 2;
-                    $("#choice-b")[0].classList.add("choice-b-tick");
-                    $("#choice-a")[0].classList.remove("choice-a-tick");
-                });
-
-                // Listen to confirm button
-                $("#button-confirm")[0].addEventListener("click", function () {
-                    if (decision.choice != 0) {
-                        socket.emit("makeChoice", decision);
-                        othersTurn();
-                    }
-                });
-
-                refresh = 1;
-            } else if (refresh == 1) {
-                othersTurn();
-                refresh = 0;
+            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
+                if (gameData.whosTurn.name != gameData.lastTurn.name) {
+                    myTurn(gameData.questions);
+                }
+                playerRefresh = 0;
+            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 0) {
+                othersTurn(gameData.whosTurn.name);
+                playerRefresh = 1;
+            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
+                othersTurnRefreshName(gameData.whosTurn.name);
             }
         } else {
             myComment();
@@ -78,8 +61,6 @@ socket.on('gameState', function (data) {
             });
         }
     }
-
-
     console.log(data);
 });
 
@@ -105,80 +86,7 @@ function centerContent() {
     content.css("top", ($(window).height() - content.height()) / 2 - 32);
 }
 
-// Submit Button listener
-$("#button-next")[0].addEventListener("click", function () {
-    if ($("#input-4").val().trim().length === 0) {
-        textField.classList.add("input__label--error");
-        setTimeout(function () {
-            textField.classList.remove("input__label--error");
-        }, 300);
-    } else if (role == "empty") {
-        $("#role")[0].classList.add("input__label--error");
-        setTimeout(function () {
-            $("#role")[0].classList.remove("input__label--error");
-        }, 300);
-    } else {
-        // Pass name and role value
-        nameAndRole.name = $("#input-4").val();
-        nameAndRole.role = role;
-        socket.emit('setNameAndRole', nameAndRole);
 
-        // Hide buttons and input
-        $(".input")[0].classList.add("animated", "fadeOut");
-        $(".input")[0].style.animationDuration = "0.2s";
-        $(".button")[0].classList.add("animated", "fadeOut");
-        $(".button")[0].style.animationDuration = "0.2s";
-        $(".description")[0].classList.add("animated", "fadeOut");
-        $(".description")[0].style.animationDuration = "0.2s";
-        $("#role")[0].classList.add("animated", "fadeOut");
-        $("#role")[0].style.animationDuration = "0.2s";
-
-        // Remove old elements
-        setTimeout(function () {
-            while ($("#main")[0].firstChild) {
-                $("#main")[0].removeChild($("#main")[0].firstChild);
-            }
-        }, 200);
-
-        // Wait for the game to start
-        if (gameSatus == 0) {
-            setTimeout(function () {
-                // Add new elements
-                var newIcon = $("<img>");
-                $("#main").append(newIcon);
-                $("#main")[0].firstChild.src = "assets/pill.png";
-                $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
-
-                var newDiv = $("<div></div>").text("Waiting for the game to start...");
-                $("#main").append(newDiv);
-                $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
-
-                centerContent();
-            }, 200);
-        }
-    }
-});
-
-// Role Button listener
-$("#button-player")[0].addEventListener("click", function () {
-    if (role == "empty" || role == "Audience") {
-        $("#button-player").attr("src", "assets/player_tick.png");
-        $("#button-player")[0].classList.add("player-tick");
-        $("#button-audience")[0].classList.remove("audience-tick");
-        $("#button-audience").attr("src", "assets/audience.png");
-        role = "Player";
-    }
-});
-
-$("#button-audience")[0].addEventListener("click", function () {
-    if (role == "empty" || role == "Player") {
-        $("#button-audience").attr("src", "assets/audience_tick.png");
-        $("#button-audience")[0].classList.add("audience-tick");
-        $("#button-player")[0].classList.remove("player-tick");
-        $("#button-player").attr("src", "assets/player.png");
-        role = "Audience";
-    }
-});
 
 // Make choice at the player's turn
 function myTurn(questions) {
@@ -236,7 +144,7 @@ function myTurn(questions) {
 }
 
 // Wait at other players' turn
-function othersTurn() {
+function othersTurn(whosTurn) {
     // Remove old elements
     while ($("#main")[0].firstChild) {
         $("#main")[0].removeChild($("#main")[0].firstChild);
@@ -248,11 +156,15 @@ function othersTurn() {
     $("#main")[0].firstChild.src = "assets/pill.png";
     $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
-    var newDiv = $("<div></div>").text("Stay calm and wait for others...");
+    var newDiv = $("<div></div>").text(`Stay calm and wait for ${whosTurn}...`);
     $("#main").append(newDiv);
     $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
 
     centerContent();
+}
+
+function othersTurnRefreshName(whosTurn) {
+    $(".description-waiting")[0].innerHTML = `Stay calm and wait for ${whosTurn}...`;
 }
 
 function myComment() {
@@ -295,3 +207,120 @@ function myComment() {
 
     centerContent();
 }
+
+$("#main")[0].addEventListener("click", function (e) {
+    switch (e.target.id) {
+        case "choice-a":
+            {
+                decision.choice = 0;
+                $("#choice-a")[0].classList.add("choice-a-tick");
+                $("#choice-b")[0].classList.remove("choice-b-tick");
+                break;
+            }
+
+        case "choice-b":
+            {
+                decision.choice = 1;
+                $("#choice-b")[0].classList.add("choice-b-tick");
+                $("#choice-a")[0].classList.remove("choice-a-tick");
+                break;
+            }
+
+        case "button-confirm":
+            {
+                if (decision.choice != 2) {
+                    socket.emit("makeChoice", decision);
+
+                    othersTurn();
+                }
+                break;
+            }
+
+        case "button-player":
+            {
+                if (role == "empty" || role == "Audience") {
+                    $("#button-player").attr("src", "assets/player_tick.png");
+                    $("#button-player")[0].classList.add("player-tick");
+                    $("#button-audience")[0].classList.remove("audience-tick");
+                    $("#button-audience").attr("src", "assets/audience.png");
+                    role = "Player";
+                }
+                break;
+            }
+
+        case "button-audience":
+            {
+                if (role == "empty" || role == "Player") {
+                    $("#button-audience").attr("src", "assets/audience_tick.png");
+                    $("#button-audience")[0].classList.add("audience-tick");
+                    $("#button-player")[0].classList.remove("player-tick");
+                    $("#button-player").attr("src", "assets/player.png");
+                    role = "Audience";
+                }
+                break;
+            }
+
+        case "button-next":
+            {
+                if ($("#input-4").val().trim().length === 0) {
+                    textField.classList.add("input__label--error");
+                    setTimeout(function () {
+                        textField.classList.remove("input__label--error");
+                    }, 300);
+                } else if (role == "empty") {
+                    $("#role")[0].classList.add("input__label--error");
+                    setTimeout(function () {
+                        $("#role")[0].classList.remove("input__label--error");
+                    }, 300);
+                } else {
+                    // Pass name and role value
+                    nameAndRole.name = $("#input-4").val();
+                    nameAndRole.role = role;
+                    socket.emit('setNameAndRole', nameAndRole);
+
+                    // Hide buttons and input
+                    $(".input")[0].classList.add("animated", "fadeOut");
+                    $(".input")[0].style.animationDuration = "0.2s";
+                    $(".button")[0].classList.add("animated", "fadeOut");
+                    $(".button")[0].style.animationDuration = "0.2s";
+                    $(".description")[0].classList.add("animated", "fadeOut");
+                    $(".description")[0].style.animationDuration = "0.2s";
+                    $("#role")[0].classList.add("animated", "fadeOut");
+                    $("#role")[0].style.animationDuration = "0.2s";
+
+                    // Remove old elements
+                    setTimeout(function () {
+                        while ($("#main")[0].firstChild) {
+                            $("#main")[0].removeChild($("#main")[0].firstChild);
+                        }
+                    }, 200);
+
+                    // Wait for the game to start
+                    if (gameSatus == 0) {
+                        setTimeout(function () {
+                            // Add new elements
+                            var newIcon = $("<img>");
+                            $("#main").append(newIcon);
+                            $("#main")[0].firstChild.src = "assets/pill.png";
+                            $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+
+                            var newDiv = $("<div></div>").text("Waiting for the game to start...");
+                            $("#main").append(newDiv);
+                            $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
+
+                            centerContent();
+                        }, 200);
+                    }
+                }
+                break;
+            }
+
+        default:
+            {
+                break;
+            }
+
+    }
+
+
+});
