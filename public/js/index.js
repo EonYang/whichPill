@@ -31,53 +31,54 @@ socket.on('gameState', function (data) {
         choice: 0
     };
     decision.who = gameData.whosTurn.name;
-    // myComment();
 
-    if (nameAndRole.role == "Player" && gameData.round != 0) {
-        if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase()) {
-            myTurn(gameData.questions);
+    if (gameData.gameState != "prep") {
+        if (nameAndRole.role == "Player") {
+            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase()) {
+                myTurn(gameData.questions);
 
+                // Listen to decisions
+                $("#choice-a")[0].addEventListener("click", function () {
+                    decision.choice = 1;
+                    $("#choice-a")[0].classList.add("choice-a-tick");
+                    $("#choice-b")[0].classList.remove("choice-b-tick");
+                });
 
-            // Listen to decisions
-            $("#choice-a")[0].addEventListener("click", function () {
-                decision.choice = 1;
-                $("#choice-a")[0].classList.add("choice-a-tick");
-                $("#choice-b")[0].classList.remove("choice-b-tick");
-            });
+                $("#choice-b")[0].addEventListener("click", function () {
+                    decision.choice = 2;
+                    $("#choice-b")[0].classList.add("choice-b-tick");
+                    $("#choice-a")[0].classList.remove("choice-a-tick");
+                });
 
-            $("#choice-b")[0].addEventListener("click", function () {
-                decision.choice = 2;
-                $("#choice-b")[0].classList.add("choice-b-tick");
-                $("#choice-a")[0].classList.remove("choice-a-tick");
-            });
+                // Listen to confirm button
+                $("#button-confirm")[0].addEventListener("click", function () {
+                    if (decision.choice != 0) {
+                        socket.emit("makeChoice", decision);
+                        othersTurn();
+                    }
+                });
 
-            // Listen to confirm button
-            $("#button-confirm")[0].addEventListener("click", function () {
-                if (decision.choice != 0) {
-                    socket.emit("makeChoice", decision);
-                    othersTurn();
+                refresh = 1;
+            } else if (refresh == 1) {
+                othersTurn();
+                refresh = 0;
+            }
+        } else {
+            myComment();
+            $("#button-send")[0].addEventListener("click", function () {
+                if ($("#input-4").val().trim().length === 0) {
+                    textField.classList.add("input__label--error");
+                    setTimeout(function () {
+                        textField.classList.remove("input__label--error");
+                    }, 300);
+                } else {
+                    let chat = $("#input-4").val();
+                    socket.emit('sendChat', chat);
                 }
             });
-
-            refresh = 1;
-        } else if (refresh == 1) {
-            othersTurn();
-            refresh = 0;
         }
-    } else {
-        myComment();
-        $("#button-send")[0].addEventListener("click", function () {
-            if ($("#input-4").val().trim().length === 0) {
-                textField.classList.add("input__label--error");
-                setTimeout(function () {
-                    textField.classList.remove("input__label--error");
-                }, 300);
-            } else {
-                let chat = $("#input-4").val();
-                socket.emit('sendChat', chat);
-            }
-        });
     }
+
 
     console.log(data);
 });
