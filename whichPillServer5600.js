@@ -92,9 +92,9 @@ function aiLeaveGame() {
 
 // setTimeout(runTestData, 2000);
 //
-// setInterval(function() {
-//   io.emit('gameState', game.getGameData());
-// }, 5000, );
+setInterval(function() {
+  io.emit('gameState', game.getGameData());
+}, 5000, );
 //
 // setInterval(sendChatSnippet, 10000, );
 
