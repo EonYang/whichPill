@@ -8,6 +8,7 @@ let nameAndRole = {
 };
 let gameSatus = 0; // 0: Preparing; 1: Started; 2: End
 let playerRefresh = 1;
+let endGameRefresh = 1;
 let decision = {
     who: "",
     choice: 2
@@ -60,8 +61,9 @@ socket.on('gameState', function (data) {
                 }
             });
         }
-    } else if (gameData.gameState == "ended") {
+    } else if (gameData.gameState == "ended" && endGameRefresh == 1) {
         endGame(gameData);
+        endGameRefresh = 0;
     }
     console.log(data);
 });
