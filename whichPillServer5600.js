@@ -9,8 +9,9 @@ const server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
 
-const io = require('socket.io').listen(server);
+module.exports = { server: server };
 
+const io = require('socket.io').listen(server);
 
 let ai = false;
 

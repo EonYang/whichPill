@@ -1,4 +1,8 @@
 const tool = require('./tool.js');
+const s = require('./whichPillServer5600.js').server;
+console.log(JSON.stringify(s));
+const io = require('socket.io').listen(s);
+
 
 let riskyChanceBase = 10;
 let riskyChanceRandom = 20;
@@ -7,6 +11,7 @@ let conservativeChanceRandom = 20;
 
 class GAME {
   constructor() {
+    this.gameState = 'prep';
     this.users = [];
     this.state = 'prep';
     this.round = 0;
@@ -44,9 +49,7 @@ class GAME {
       console.log(`game in inProgress, marked him as offline.`);
       this.users[userIndex].online = false;
       if (this.whosTurn.name == this.users[userIndex].name) {
-        let choice = Math.random() > 0.5 ? 0 : 1;
-        console.log(`${this.users[userIndex].name} is offline, we made a random choice for him`);
-        this.storeUserChoice(this.users[userIndex].socketId, choice);
+        this.makeChoiceForOfflineUser(this.users[userIndex].socketId)
       }
     } else {
       console.log(`who cares, game ended anyway`);
@@ -113,9 +116,7 @@ class GAME {
     // if he is offline, make a choice for him
     if (lastIndex >= 0) {
       if (!this.users[lastIndex].online) {
-        let choice = Math.random() > 0.5 ? 0 : 1;
-        console.log(`${this.users[lastIndex].name} is offline, we made a random choice for him`);
-        this.storeUserChoice(this.users[i].socketId, choice);
+        this.makeChoiceForOfflineUser(this.users[lastIndex].socketId);
       }
     }
 
@@ -123,6 +124,8 @@ class GAME {
       this.nextRound();
     }
   }
+
+
 
   getNewQuestion() {
     let hasHugeBackFire = 0;
@@ -252,6 +255,20 @@ class GAME {
       }
     }
     console.log(`${takingLead} takes lead wich a sum of ${bigestSum}`);
+  }
+
+  makeChoiceForOfflineUser(userSocket) {
+    // add a 2 seconds delay
+    let self = this;
+    console.log('making choice for offline people, in 2 sec');
+    setTimeout(function () {
+      let i = tool.FindIndexBySocket(self.users, userSocket);
+      let choice = Math.random() > 0.5 ? 0 : 1;
+      console.log(`${self.users[i].name} is offline, we made a random choice for him`);
+      self.storeUserChoice(userSocket, choice);
+      io.emit('gameState', self.getGameData());
+    },2000);
+
   }
 }
 
