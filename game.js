@@ -88,6 +88,7 @@ class GAME {
     } else if (this.round == this.totalRound) {
       this.gameEnd();
     }
+    this.whoIsTakingLead();
   }
 
   nextTurn() {
@@ -182,7 +183,6 @@ class GAME {
       // console.log(`${this.lastTurn}`);
       this.users[userIndex].scores.push(gain);
       this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
-      this.whoIsTakingLead();
       this.nextTurn();
     }
   }
