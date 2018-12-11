@@ -90,8 +90,6 @@ function centerContent() {
     content.css("top", ($(window).height() - content.height()) / 2 - 32);
 }
 
-
-
 // Make choice at the player's turn
 function myTurn(questions) {
     // Remove old elements
@@ -179,7 +177,6 @@ function endGame(data) {
             maxIndex = i;
         }
     }
-    
 
     // Remove old elements
     while ($("#main")[0].firstChild) {
