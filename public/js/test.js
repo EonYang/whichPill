@@ -49,7 +49,7 @@ function myTurn(questions) {
     // Add choices
     let newDiv = $("<div></div>");
     let newButton = $("<button></button>");
-    let newIcon = $("<img>");
+    let newIcon = $("<img />");
 
     $("#main").append(newDiv.clone());
     $("#main")[0].childNodes[0].id = "choiceGroup";
@@ -62,9 +62,12 @@ function myTurn(questions) {
     $("#choiceGroup")[0].childNodes[1].id = "choice-b";
     $("#choiceGroup")[0].childNodes[1].classList.add("choice-b", "animated", "fadeIn");
 
+    let txtPercentage = $("<div></div>").text("100%");
+    let txtWin = $("<div></div>").text("+ 1000 power");
+    let txtLose = $("<div></div>").text("- 1000 power");
+    let txtNeutral = $("<div></div>").text("Nothing happens");
+    
     // Choice A
-
-    let txt1 = $("<span></span>").text(`You have 100% chance to win 20 with a backfire of 10!`);
     $("#choice-a").append(newIcon.clone());
     $("#choice-a").append(newDiv.clone());
 
@@ -72,19 +75,51 @@ function myTurn(questions) {
     $("#choice-a")[0].childNodes[0].classList.add("results-a-icon");
 
     $("#choice-a")[0].childNodes[1].id = "result-a"
-    $("#result-a").append(txt1);
-
-    
+    $("#result-a").append(newDiv.clone());
+    $("#result-a").append(newDiv.clone());
+    $("#result-a")[0].childNodes[0].id = "result-a-1";
+    $("#result-a")[0].childNodes[0].classList.add("results-text");
+    $("#result-a")[0].childNodes[1].id = "result-a-2";
+    $("#result-a")[0].childNodes[1].classList.add("results-text");
+    $("#result-a-1").append(txtPercentage.clone());
+    $("#result-a-1").append(txtWin.clone());
+    $("#result-a-1")[0].childNodes[0].id = "result-a-1-percentage";
+    $("#result-a-1")[0].childNodes[1].id = "result-a-1-text";
+    $("#result-a-2").append(txtPercentage.clone());
+    $("#result-a-2").append(txtLose.clone());
+    $("#result-a-2")[0].childNodes[0].id = "result-a-2-percentage";
+    $("#result-a-2")[0].childNodes[1].id = "result-a-2-text";
 
     // Choice B
     // let chanceB = questions[0][1].chance;
     // let valueB = questions[0][1].value;
     // let backfireB = questions[0][1].backfire;
 
-    let txt2 = $("<span></span>").text(`You have 30% chance to win  with a backfire of !`);
+    $("#choice-b").append(newIcon.clone());
     $("#choice-b").append(newDiv.clone());
-    $("#choice-b")[0].childNodes[0].id = "result-b"
-    $("#result-b").append(txt2);
+
+    $("#choice-b")[0].childNodes[0].src = "assets/pill.png";
+    $("#choice-b")[0].childNodes[0].classList.add("results-b-icon");
+
+    $("#choice-b")[0].childNodes[1].id = "result-b"
+    $("#result-b").append(newDiv.clone());
+    $("#result-b").append(newDiv.clone());
+    $("#result-b")[0].childNodes[0].id = "result-b-1";
+    $("#result-b")[0].childNodes[0].classList.add("results-text");
+    $("#result-b")[0].childNodes[1].id = "result-b-2";
+    $("#result-b")[0].childNodes[1].classList.add("results-text");
+    $("#result-b-1").append(txtPercentage.clone());
+    $("#result-b-1").append(txtWin).clone();
+    $("#result-b-1")[0].childNodes[0].id = "result-b-1-percentage";
+    $("#result-b-1")[0].childNodes[1].id = "result-b-1-text";
+    $("#result-b-2").append(txtPercentage.clone());
+    $("#result-b-2").append(txtNeutral.clone());
+    $("#result-b-2")[0].childNodes[0].id = "result-b-2-percentage";
+    $("#result-b-2")[0].childNodes[1].id = "result-b-2-text";
+
+    // $("#choice-b").append(newDiv.clone());
+    // $("#choice-b")[0].childNodes[0].id = "result-b"
+    // $("#result-b").append(txt3);
 
     // Add sumbit button
     $("#choiceGroup").append(newDiv.clone());

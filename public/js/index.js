@@ -100,6 +100,7 @@ function myTurn(questions) {
     // Add choices
     let newDiv = $("<div></div>");
     let newButton = $("<button></button>");
+    let newIcon = $("<img />");
 
     $("#main").append(newDiv.clone());
     $("#main")[0].childNodes[0].id = "choiceGroup";
@@ -112,27 +113,82 @@ function myTurn(questions) {
     $("#choiceGroup")[0].childNodes[1].id = "choice-b";
     $("#choiceGroup")[0].childNodes[1].classList.add("choice-b", "animated", "fadeIn");
 
-    // Choice A
     let chanceA = questions[0][0].chance;
     let valueA = questions[0][0].value;
-    let backfireA = questions[0][0].backfire;
+    let backfireA = -questions[0][0].backfire;
 
-    let txt1 = $("<span></span>").text(`You have ${(100 * chanceA).toFixed(0)}% chance to win ${valueA} with a backfire of ${backfireA}!`);
-    $("#choice-a").append(newDiv.clone());
-    $("#choice-a")[0].childNodes[0].id = "result-a"
-    $("#result-a").append(txt1);
-
-    // Choice B
     let chanceB = questions[0][1].chance;
     let valueB = questions[0][1].value;
-    let backfireB = questions[0][1].backfire;
+    // let backfireB = questions[0][1].backfire;
 
-    let txt2 = $("<span></span>").text(`You have ${(100 * chanceB).toFixed(0)}% chance to win ${valueB} with a backfire of ${backfireB}!`);
+    let txtPercentageA1 = $("<div></div>").text(`${(100 * chanceA).toFixed(0)}%`);
+    let txtPercentageA2 = $("<div></div>").text(`${(100 * (1 - chanceA)).toFixed(0)}%`);
+    let txtPercentageB1 = $("<div></div>").text(`${(100 * chanceB).toFixed(0)}%`);
+    let txtPercentageB2 = $("<div></div>").text(`${(100 * (1 - chanceB)).toFixed(0)}%`);
+    let txtWinA = $("<div></div>").text(`+ ${valueA} power`);
+    let txtWinB = $("<div></div>").text(`+ ${valueB} power`);
+    let txtLose = $("<div></div>").text(`- ${backfireA} power`);
+    let txtNeutral = $("<div></div>").text("Nothing happens");
+
+    // Choice A
+    $("#choice-a").append(newIcon.clone());
+    $("#choice-a").append(newDiv.clone());
+
+    $("#choice-a")[0].childNodes[0].id = "redPill";
+    $("#choice-a")[0].childNodes[0].src = "assets/pill_red.png";
+    $("#choice-a")[0].childNodes[0].classList.add("results-a-icon");
+
+    $("#choice-a")[0].childNodes[1].id = "result-a"
+    $("#result-a").append(newDiv.clone());
+    $("#result-a").append(newDiv.clone());
+    $("#result-a")[0].childNodes[0].id = "result-a-1";
+    $("#result-a")[0].childNodes[0].classList.add("results-text");
+    $("#result-a")[0].childNodes[1].id = "result-a-2";
+    $("#result-a")[0].childNodes[1].classList.add("results-text");
+    $("#result-a-1").append(txtPercentageA1);
+    $("#result-a-1").append(txtWinA);
+    $("#result-a-1")[0].childNodes[0].id = "result-a-1-percentage";
+    $("#result-a-1")[0].childNodes[1].id = "result-a-1-text";
+    $("#result-a-2").append(txtPercentageA2);
+    $("#result-a-2").append(txtLose);
+    $("#result-a-2")[0].childNodes[0].id = "result-a-2-percentage";
+    $("#result-a-2")[0].childNodes[1].id = "result-a-2-text";
+
+    // let txt1 = $("<span></span>").text(`You have ${(100 * chanceA).toFixed(0)}% chance to win ${valueA} with a backfire of ${backfireA}!`);
+    // $("#choice-a").append(newDiv.clone());
+    // $("#choice-a")[0].childNodes[0].id = "result-a"
+    // $("#result-a").append(txt1);
+
+    // Choice B
+    $("#choice-b").append(newIcon.clone());
     $("#choice-b").append(newDiv.clone());
-    $("#choice-b")[0].childNodes[0].id = "result-b"
-    $("#result-b").append(txt2);
 
-    // Add sumbit button
+    $("#choice-b")[0].childNodes[0].id = "bluePill";
+    $("#choice-b")[0].childNodes[0].src = "assets/pill.png";
+    $("#choice-b")[0].childNodes[0].classList.add("results-b-icon");
+
+    $("#choice-b")[0].childNodes[1].id = "result-b"
+    $("#result-b").append(newDiv.clone());
+    $("#result-b").append(newDiv.clone());
+    $("#result-b")[0].childNodes[0].id = "result-b-1";
+    $("#result-b")[0].childNodes[0].classList.add("results-text");
+    $("#result-b")[0].childNodes[1].id = "result-b-2";
+    $("#result-b")[0].childNodes[1].classList.add("results-text");
+    $("#result-b-1").append(txtPercentageB1);
+    $("#result-b-1").append(txtWinB);
+    $("#result-b-1")[0].childNodes[0].id = "result-b-1-percentage";
+    $("#result-b-1")[0].childNodes[1].id = "result-b-1-text";
+    $("#result-b-2").append(txtPercentageB2);
+    $("#result-b-2").append(txtNeutral);
+    $("#result-b-2")[0].childNodes[0].id = "result-b-2-percentage";
+    $("#result-b-2")[0].childNodes[1].id = "result-b-2-text";
+
+    // let txt2 = $("<span></span>").text(`You have ${(100 * chanceB).toFixed(0)}% chance to win ${valueB} with a backfire of ${backfireB}!`);
+    // $("#choice-b").append(newDiv.clone());
+    // $("#choice-b")[0].childNodes[0].id = "result-b"
+    // $("#result-b").append(txt2);
+
+    // // Add sumbit button
     $("#choiceGroup").append(newDiv.clone());
     $("#choiceGroup")[0].childNodes[2].classList.add("button", "animated", "fadeIn");
     $("#choiceGroup")[0].childNodes[2].id = "buttonTurn";
@@ -153,9 +209,9 @@ function othersTurn(whosTurn) {
     }
 
     // Add new elements
-    var newIcon = $("<img>");
+    var newIcon = $("<img />");
     $("#main").append(newIcon);
-    $("#main")[0].firstChild.src = "assets/pill.png";
+    $("#main")[0].firstChild.src = "assets/hourglass.png";
     $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
     var newDiv = $("<div></div>").text(`Stay calm and wait for ${whosTurn}...`);
@@ -184,7 +240,7 @@ function endGame(data) {
     }
 
     // Add new elements
-    var newIcon = $("<img>");
+    var newIcon = $("<img />");
     $("#main").append(newIcon);
     $("#main")[0].firstChild.src = "assets/pill.png";
     $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
@@ -240,6 +296,14 @@ function myComment() {
 $("#main")[0].addEventListener("click", function (e) {
     switch (e.target.id) {
         case "choice-a":
+        case "redPill":
+        case "result-a": 
+        case "result-a-1": 
+        case "result-a-2": 
+        case "result-a-1-percentage": 
+        case "result-a-1-text": 
+        case "result-a-2-percentage": 
+        case "result-a-2-text": 
             {
                 decision.choice = 0;
                 $("#choice-a")[0].classList.add("choice-a-tick");
@@ -248,6 +312,14 @@ $("#main")[0].addEventListener("click", function (e) {
             }
 
         case "choice-b":
+        case "bluePill":
+        case "result-b": 
+        case "result-b-1": 
+        case "result-b-2": 
+        case "result-b-1-percentage": 
+        case "result-b-1-text": 
+        case "result-b-2-percentage": 
+        case "result-b-2-text":
             {
                 decision.choice = 1;
                 $("#choice-b")[0].classList.add("choice-b-tick");
@@ -328,9 +400,9 @@ $("#main")[0].addEventListener("click", function (e) {
                     if (gameSatus == 0) {
                         setTimeout(function () {
                             // Add new elements
-                            var newIcon = $("<img>");
+                            var newIcon = $("<img />");
                             $("#main").append(newIcon);
-                            $("#main")[0].firstChild.src = "assets/pill.png";
+                            $("#main")[0].firstChild.src = "assets/hourglass.png";
                             $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
                             var newDiv = $("<div></div>").text("Waiting for the game to start...");
