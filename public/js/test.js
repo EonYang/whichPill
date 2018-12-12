@@ -1,4 +1,3 @@
-let socket = io('/');
 let gameData;
 let role = "empty";
 let nameAndRole = {
@@ -17,56 +16,6 @@ let decision = {
 let textField = $("#search")[0];
 
 // Server
-socket.on('connect', function () {
-    console.log("You are connected: " + socket.id);
-});
-
-socket.on('disconncted', function () {
-    socket.emit('disconnected', socket.id);
-});
-
-socket.on('startGame', function () {
-    console.log('game started');
-});
-
-socket.on('gameState', function (data) {
-    gameData = data;
-
-    decision.who = gameData.whosTurn.name;
-
-    if (gameData.gameState == "inProgress") {
-        if (nameAndRole.role == "Player") {
-            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
-                if (gameData.whosTurn.name != gameData.lastTurn.name) {
-                    myTurn(gameData.questions);
-                }
-                playerRefresh = 0;
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 0) {
-                othersTurn(gameData.whosTurn.name);
-                playerRefresh = 1;
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
-                othersTurnRefreshName(gameData.whosTurn.name);
-            }
-        } else if (nameAndRole.role == "Audience") {
-            myComment();
-            $("#button-send")[0].addEventListener("click", function () {
-                if ($("#input-4").val().trim().length === 0) {
-                    textField.classList.add("input__label--error");
-                    setTimeout(function () {
-                        textField.classList.remove("input__label--error");
-                    }, 300);
-                } else {
-                    let chat = $("#input-4").val();
-                    socket.emit('sendChat', chat);
-                }
-            });
-        }
-    } else if (gameData.gameState == "ended" && endGameRefresh == 1) {
-        endGame(gameData);
-        endGameRefresh = 0;
-    }
-    console.log(data);
-});
 
 // Client
 
@@ -100,6 +49,7 @@ function myTurn(questions) {
     // Add choices
     let newDiv = $("<div></div>");
     let newButton = $("<button></button>");
+    let newIcon = $("<img>");
 
     $("#main").append(newDiv.clone());
     $("#main")[0].childNodes[0].id = "choiceGroup";
@@ -113,21 +63,25 @@ function myTurn(questions) {
     $("#choiceGroup")[0].childNodes[1].classList.add("choice-b", "animated", "fadeIn");
 
     // Choice A
-    let chanceA = questions[0][0].chance;
-    let valueA = questions[0][0].value;
-    let backfireA = questions[0][0].backfire;
 
-    let txt1 = $("<span></span>").text(`You have ${(100 * chanceA).toFixed(0)}% chance to win ${valueA} with a backfire of ${backfireA}!`);
+    let txt1 = $("<span></span>").text(`You have 100% chance to win 20 with a backfire of 10!`);
+    $("#choice-a").append(newIcon.clone());
     $("#choice-a").append(newDiv.clone());
-    $("#choice-a")[0].childNodes[0].id = "result-a"
+
+    $("#choice-a")[0].childNodes[0].src = "assets/pill_red.png";
+    $("#choice-a")[0].childNodes[0].classList.add("results-a-icon");
+
+    $("#choice-a")[0].childNodes[1].id = "result-a"
     $("#result-a").append(txt1);
 
-    // Choice B
-    let chanceB = questions[0][1].chance;
-    let valueB = questions[0][1].value;
-    let backfireB = questions[0][1].backfire;
+    
 
-    let txt2 = $("<span></span>").text(`You have ${(100 * chanceB).toFixed(0)}% chance to win ${valueB} with a backfire of ${backfireB}!`);
+    // Choice B
+    // let chanceB = questions[0][1].chance;
+    // let valueB = questions[0][1].value;
+    // let backfireB = questions[0][1].backfire;
+
+    let txt2 = $("<span></span>").text(`You have 30% chance to win  with a backfire of !`);
     $("#choice-b").append(newDiv.clone());
     $("#choice-b")[0].childNodes[0].id = "result-b"
     $("#result-b").append(txt2);
@@ -141,98 +95,6 @@ function myTurn(questions) {
     $("#choiceGroup")[0].childNodes[2].firstChild.id = "button-confirm";
     $("#button-confirm").append("Confirm");
     $("#button-confirm")[0].classList.add("button", "button-confirm", "animated", "fadeIn");
-
-    centerContent();
-}
-
-// Wait at other players' turn
-function othersTurn(whosTurn) {
-    // Remove old elements
-    while ($("#main")[0].firstChild) {
-        $("#main")[0].removeChild($("#main")[0].firstChild);
-    }
-
-    // Add new elements
-    var newIcon = $("<img>");
-    $("#main").append(newIcon);
-    $("#main")[0].firstChild.src = "assets/pill.png";
-    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
-
-    var newDiv = $("<div></div>").text(`Stay calm and wait for ${whosTurn}...`);
-    $("#main").append(newDiv);
-    $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
-
-    centerContent();
-}
-
-function othersTurnRefreshName(whosTurn) {
-    $(".description-waiting")[0].innerHTML = `Stay calm and wait for ${whosTurn}...`;
-}
-
-function endGame(data) {
-    let maxSum = data.users[0].sum;
-    let maxIndex;
-    for (i = 0; i < 4; i++) {
-        if (data.users[i].sum > maxSum) {
-            maxIndex = i;
-        }
-    }
-
-    // Remove old elements
-    while ($("#main")[0].firstChild) {
-        $("#main")[0].removeChild($("#main")[0].firstChild);
-    }
-
-    // Add new elements
-    var newIcon = $("<img>");
-    $("#main").append(newIcon);
-    $("#main")[0].firstChild.src = "assets/pill.png";
-    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
-
-    var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
-    $("#main").append(newDiv);
-    $("#main")[0].childNodes[1].classList.add("description", "animated", "fadeIn", "slow");
-
-    centerContent();
-}
-
-function myComment() {
-    // Remove old elements
-    while ($("#main")[0].firstChild) {
-        $("#main")[0].removeChild($("#main")[0].firstChild);
-    }
-
-    // Add input
-    let newDiv = $("<div></div>");
-    let newSpan = $("<span></span>");
-    let newButton = $("<button></button>");
-    let newInput = $("<input></input>");
-    let newLabel = $("<label></label>");
-    var txt = $("<div></div>").text("Say something nice to the players! Or not...");
-
-    $("#main").append(txt);
-    $("#main").append(newDiv.clone());
-    $("#main").append(newDiv.clone());
-
-    $("#main")[0].childNodes[0].classList.add("description-chat");
-    $("#main")[0].childNodes[1].id = "search";
-    $("#main")[0].childNodes[2].classList.add("button");
-
-    $("#search").append(newSpan.clone());
-    $("#search")[0].firstChild.classList.add("input", "input--hoshi");
-    $(".input").append(newInput.clone());
-    $(".input").append(newLabel.clone());
-    $(".input")[0].childNodes[0].type = "text";
-    $(".input")[0].childNodes[0].id = "input-4";
-    $(".input")[0].childNodes[0].htmlFor = "input-4";
-    $(".input")[0].childNodes[0].classList.add("input__field", "input__field--hoshi");
-    $(".input")[0].childNodes[1].classList.add("input__label", "input__label--hoshi", "input__label--hoshi-color-0");
-
-    $(".button").append(newButton.clone());
-    $(".button")[0].firstChild.innerHTML = "Send";
-    $(".button")[0].firstChild.id = "button-send";
-    $(".button")[0].firstChild.type = "button";
-    $(".button")[0].firstChild.classList.add("button", "button--send");
 
     centerContent();
 }
@@ -353,3 +215,5 @@ $("#main")[0].addEventListener("click", function (e) {
 
 
 });
+
+myTurn();

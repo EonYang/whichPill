@@ -384,25 +384,38 @@ button {
 #result-a{
 	position: relative;
 	height: 40px;
-	text-align: center;
+	text-align: left;
 	font-size: 3em;
 	font-family: 'Montserrat', sans-serif;
 	letter-spacing: 4px;
 	text-transform: uppercase;
 	font-weight: bold;
 	margin-bottom: 40px;
+	margin-left: 100px;
+	margin-right: 40px;
+}
+
+.results-a-icon{
+	position: relative;
+	vertical-align: middle;
+	width: 220px;
+	height: 220px;
+	margin: auto;
+	left: 80px;
+	float: left;
 }
 
 #result-b{
 	position: relative;
 	height: 40px;
-	text-align: center;
+	text-align: left;
 	font-size: 3em;
 	font-family: 'Montserrat', sans-serif;
 	letter-spacing: 4px;
 	text-transform: uppercase;
 	font-weight: bold;
 	margin-bottom: 40px;
+	margin-left: 80px;
 }
 
 .choice-a {
@@ -417,7 +430,7 @@ button {
 	display: block;
 	border-style: solid;
     border-color: white;
-    border-width: 4px;
+	border-width: 4px;
 }
 
 .choice-a-tick {
@@ -432,7 +445,7 @@ button {
 	display: block;
 	border-style: solid;
     border-color: #083D77;
-    border-width: 4px;
+	border-width: 4px;
 }
 
 .choice-b {
@@ -447,7 +460,8 @@ button {
 	display: block;
 	border-style: solid;
     border-color: white;
-    border-width: 4px;
+	border-width: 4px;
+	line-height: 400px;
 }
 
 .choice-b-tick {
@@ -462,7 +476,8 @@ button {
 	display: block;
 	border-style: solid;
     border-color: #083D77;
-    border-width: 4px;
+	border-width: 4px;
+	line-height: 400px;
 }
 
 .button-confirm {
