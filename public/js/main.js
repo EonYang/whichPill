@@ -227,9 +227,9 @@ function updateScreen(gameData) {
         $("#redPill")[0].src = "assets/pill_red.png";
         $("#bluePill")[0].src = "assets/pill.png";
 
-        for (i = 0; i< userNumber; i++) {
+        for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
-            $(`#scoreblock${i}Score`)[i].innerHTML = `${score}`;
+            $(`#scoreblock${i}`)[i].innerHTML = `${score}`;
         }
         $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
         $("#result-a-1-text")[0].innerHTML = txtWinA;
