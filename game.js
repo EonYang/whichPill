@@ -213,7 +213,7 @@ class GAME {
         scores: this.users[i].scores,
         sum: this.users[i].sum,
         socket: this.users[i].socketId,
-        cookir: this.users[i].cookie,
+        cookie: this.users[i].cookie,
       }
       data.users.push(user);
     }
