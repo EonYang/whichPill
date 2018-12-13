@@ -21,7 +21,8 @@ web.on('connection', function(socket) {
 
   socket.on('sendCookie', function(data) {
     console.log(JSON.stringify(data));
-    game.tryRetriveUser(data, socket.id);
+    game.isThisANewPlayer(data, socket.id);
+    io.emit('gameState', game.getGameData());
   });
 
   socket.on('setNameAndRole', function(data) {

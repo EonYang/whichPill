@@ -24,17 +24,24 @@ class GAME {
     }
   }
 
-  tryRetriveUser(cookie, socketId) {
+  isThisANewPlayer(cookie, socketId){
+    let r;
     let index = tool.FindIndexByCookie(this.users, cookie);
     if (index != -1) {
+      this.retriveUser(cookie, socketId, index);
+      r = false;
+      // client needs to tell this user to get back to his game.
+    } else {
+      console.log(`this is a new user`);
+      r = true;
+    }
+    return [r, index];
+  }
+  retriveUser(cookie, socketId, index) {
       // save his new socket id.
       this.users[index].socketId = socketId;
       this.users[index].online = true;
       console.log(`${this.users[index]} is coming back`);
-      // client needs to tell this user to get back to his game.
-    } else {
-      console.log(`this is a new user`);
-    }
   }
 
   userLeavesGame(userSocketId) {
@@ -206,6 +213,7 @@ class GAME {
         scores: this.users[i].scores,
         sum: this.users[i].sum,
         socket: this.users[i].socketId,
+        cookir: this.users[i].cookie,
       }
       data.users.push(user);
     }
