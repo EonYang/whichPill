@@ -34,7 +34,7 @@ socket.on('gameState', function (data) {
     gameData = data;
 
     decision.who = gameData.whosTurn.name;
-    let returnUser = true;
+    let returnUser = false;
 
     let userNumber = gameData.users.length;
     for (i = 0; i < userNumber; i++) {
@@ -42,6 +42,8 @@ socket.on('gameState', function (data) {
             returnUser = true;
         }
     }
+    console.log("fired");
+    console.log(returnUser);
 
     if (gameData.gameState == "inProgress") {
         if (nameAndRole.role == "Player" && returnUser) {
@@ -75,6 +77,7 @@ socket.on('gameState', function (data) {
         endGameRefresh = 0;
     }
     console.log(data);
+    console.log("fired");
 });
 
 
