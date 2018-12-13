@@ -18,7 +18,7 @@ socket.on('gameState', function (data) {
         initScreen(gameData);
         refreshScreen = 0;
     } else if (gameData.gameState == "inProgress" && refreshScreen == 0){
-        // updateScreen(gameData);
+        updateScreen(gameData);
     }
     console.log(data);
 });
@@ -42,7 +42,7 @@ function centerContent() {
     var container = $('#home');
     var content = $('#main');
     content.css("left", (container.width() - content.width()) / 2);
-    content.css("top", ($(window).height() - content.height()) / 2 - 32);
+    content.css("top", ($(window).height() - content.height()) / 2 + 16);
 }
 
 // Main
@@ -53,6 +53,7 @@ function initScreen(gameData) {
     }
 
     let newDiv = $("<div></div>");
+    let newIcon = $("<img />");
 
     $("#main").append(newDiv.clone());
     $("#main").append(newDiv.clone());
@@ -67,120 +68,98 @@ function initScreen(gameData) {
 
     // Info Group - Round
     $("#infoRound").append(newDiv.clone());
-    $("#infoRound").append(newDiv.clone());
     $("#infoRound")[0].childNodes[0].id = "roundTitle";
-    $("#infoRound")[0].childNodes[1].id = "roundBlock";
 
     // Info Group - Round - Title
-    $("#roundTitle")[0].innerHTML = "Round";
+    $("#roundTitle")[0].innerHTML = `Round ${gameData.round}`;
     $("#roundTitle")[0].classList.add("title");
-
-    // Info Group - Round - Block
-    $("#roundBlock").append(newDiv.clone());
-    $("#roundBlock").append(newDiv.clone());
-    $("#roundBlock")[0].classList.add("blocks");
-    $("#roundBlock")[0].childNodes[0].id = "roundNumber";
-    $("#roundBlock")[0].childNodes[1].id = "roundTaker";
-    $("#roundNumber")[0].classList.add("blockTitle");
-    $("#roundTaker")[0].classList.add("blockText");
-    $("#roundNumber")[0].innerHTML = `${gameData.round}`;
-    $("#roundTaker")[0].innerHTML = `${gameData.whosTurn.name}`;
 
     // Info Group - Scoreboard
     $("#infoScoreboard").append(newDiv.clone());
-    $("#infoScoreboard").append(newDiv.clone());
-    $("#infoScoreboard")[0].childNodes[0].id = "scoreboardTitle";
-    $("#infoScoreboard")[0].childNodes[1].id = "scoreboardBlockGroup";
-
-    // Info Group - Scoreboard - Title
-    $("#scoreboardTitle")[0].innerHTML = "Scoreboard";
-    $("#scoreboardTitle")[0].classList.add("title");
+    $("#infoScoreboard")[0].childNodes[0].id = "scoreboardBlockGroup";
 
     // Info Group - Scoreboard - Block
-    blockGenerator(0, gameData.users[0].name, gameData.users[0].scores);
-    blockGenerator(1, gameData.users[1].name, gameData.users[1].scores);
-    blockGenerator(2, gameData.users[2].name, gameData.users[2].scores);
-    blockGenerator(3, gameData.users[3].name, gameData.users[3].scores);
+    blockGenerator(0, gameData.users[0].name, gameData.users[0].sum);
+    blockGenerator(1, gameData.users[1].name, gameData.users[1].sum);
+    blockGenerator(2, gameData.users[2].name, gameData.users[2].sum);
+    blockGenerator(3, gameData.users[3].name, gameData.users[3].sum);
     
     // Turn Group
     $("#turnGroup").append(newDiv.clone());
     $("#turnGroup").append(newDiv.clone());
     $("#turnGroup").append(newDiv.clone());
-    $("#turnGroup")[0].childNodes[0].id = "turnRedPill";
-    $("#turnGroup")[0].childNodes[1].id = "turnVs";
-    $("#turnGroup")[0].childNodes[1].id = "turnBluePill";
+    $("#turnGroup")[0].childNodes[0].id = "turnTitle";
+    $("#turnGroup")[0].childNodes[1].id = "choice-a";
+    $("#turnGroup")[0].childNodes[2].id = "choice-b";
 
+    // Turn Group - Turn - Title
+    $("#turnTitle")[0].innerHTML = `${gameData.whosTurn.name}'s Turn`;
+    $("#turnTitle")[0].classList.add("title");
 
+    // Turn Group - Turn - Choice
+    let chanceA = gameData.questions[0][0].chance;
+    let valueA = gameData.questions[0][0].value;
+    let backfireA = -gameData.questions[0][0].backfire;
 
+    let chanceB = gameData.questions[0][1].chance;
+    let valueB = gameData.questions[0][1].value;
 
+    let txtPercentageA1 = $("<div></div>").text(`${(100 * chanceA).toFixed(0)}%`);
+    let txtPercentageA2 = $("<div></div>").text(`${(100 * (1 - chanceA)).toFixed(0)}%`);
+    let txtPercentageB1 = $("<div></div>").text(`${(100 * chanceB).toFixed(0)}%`);
+    let txtPercentageB2 = $("<div></div>").text(`${(100 * (1 - chanceB)).toFixed(0)}%`);
+    let txtWinA = $("<div></div>").text(`+ ${valueA} power`);
+    let txtWinB = $("<div></div>").text(`+ ${valueB} power`);
+    let txtLose = $("<div></div>").text(`- ${backfireA} power`);
+    let txtNeutral = $("<div></div>").text("Nothing happens");
 
+    // Choice A
+    $("#choice-a").append(newIcon.clone());
+    $("#choice-a").append(newDiv.clone());
 
+    $("#choice-a")[0].childNodes[0].id = "redPill";
+    $("#choice-a")[0].childNodes[0].src = "assets/pill_red.png";
+    $("#choice-a")[0].childNodes[0].classList.add("results-a-icon");
 
+    $("#choice-a")[0].childNodes[1].id = "result-a"
+    $("#result-a").append(newDiv.clone());
+    $("#result-a").append(newDiv.clone());
+    $("#result-a")[0].childNodes[0].id = "result-a-1";
+    $("#result-a")[0].childNodes[0].classList.add("results-text");
+    $("#result-a")[0].childNodes[1].id = "result-a-2";
+    $("#result-a")[0].childNodes[1].classList.add("results-text");
+    $("#result-a-1").append(txtPercentageA1);
+    $("#result-a-1").append(txtWinA);
+    $("#result-a-1")[0].childNodes[0].id = "result-a-1-percentage";
+    $("#result-a-1")[0].childNodes[1].id = "result-a-1-text";
+    $("#result-a-2").append(txtPercentageA2);
+    $("#result-a-2").append(txtLose);
+    $("#result-a-2")[0].childNodes[0].id = "result-a-2-percentage";
+    $("#result-a-2")[0].childNodes[1].id = "result-a-2-text";
 
+    // Choice B
+    $("#choice-b").append(newIcon.clone());
+    $("#choice-b").append(newDiv.clone());
 
+    $("#choice-b")[0].childNodes[0].id = "bluePill";
+    $("#choice-b")[0].childNodes[0].src = "assets/pill.png";
+    $("#choice-b")[0].childNodes[0].classList.add("results-b-icon");
 
-
-
-
-
-
-
-
-    // $("#choiceGroup").append(newDiv.clone());
-    // $("#choiceGroup").append(newDiv.clone());
-    // $("#choiceGroup")[0].childNodes[0].id = "choice-a";
-    // $("#choiceGroup")[0].childNodes[0].classList.add("animated", "fadeIn");
-    // $("#choiceGroup")[0].childNodes[1].id = "choice-b";
-    // $("#choiceGroup")[0].childNodes[1].classList.add("animated", "fadeIn");
-
-    // // Choice A
-    // let chanceA = gameData.questions[0][0].chance;
-    // let valueA = gameData.questions[0][0].value;
-    // let backfireA = gameData.questions[0][0].backfire;
-
-    // let txt1 = $("<span></span>").text(`You have ${(100 * chanceA).toFixed(0)}% chance to win ${valueA} with a backfire of ${backfireA}!`);
-    // $("#choice-a").append(newDiv.clone());
-    // $("#choice-a")[0].childNodes[0].id = "result-a"
-    // $("#result-a").append(txt1);
-
-    // // Choice B
-    // let chanceB = gameData.questions[0][1].chance;
-    // let valueB = gameData.questions[0][1].value;
-    // let backfireB = gameData.questions[0][1].backfire;
-
-    // let txt2 = $("<span></span>").text(`You have ${(100 * chanceB).toFixed(0)}% chance to win ${valueB} with a backfire of ${backfireB}!`);
-    // $("#choice-b").append(newDiv.clone());
-    // $("#choice-b")[0].childNodes[0].id = "result-b"
-    // $("#result-b").append(txt2);
-
-    // // Add score board
-    // $("#main").prepend(newDiv.clone());
-    // $("#main")[0].childNodes[0].id = "scoreBoard";
-    // $("#scoreBoard")[0].classList.add("animated", "fadeIn");
-
-    // let player1 = $("<div></div>").text(`${gameData.users[0].name}: ${gameData.users[0].sum}`);
-    // let player2 = $("<div></div>").text(`${gameData.users[1].name}: ${gameData.users[1].sum}`);
-    // let player3 = $("<div></div>").text(`${gameData.users[2].name}: ${gameData.users[2].sum}`);
-    // let player4 = $("<div></div>").text(`${gameData.users[3].name}: ${gameData.users[3].sum}`);
-    // $("#scoreBoard").append(player1);
-    // $("#scoreBoard").append(player2);
-    // $("#scoreBoard").append(player3);
-    // $("#scoreBoard").append(player4);
-    // $("#scoreBoard").children().each(function () {
-    //     this.classList.add("score");
-    // });
-
-    // // Add round and turn info
-    // $("#main").append(newDiv.clone());
-    // $("#main")[0].lastChild.id = "info"
-    // $("#info")[0].classList.add("animated", "fadeIn");
-
-    // let round = $("<div></div>").text(`Round: ${gameData.round}`);
-    // let turn = $("<div></div>").text(`It's ${gameData.whosTurn.name}'s turn.`);
-    // $("#info").append(round);
-    // $("#info").append(turn);
-    // $("#info")[0].childNodes[0].classList.add("round");
-    // $("#info")[0].childNodes[1].classList.add("turn");
+    $("#choice-b")[0].childNodes[1].id = "result-b"
+    $("#result-b").append(newDiv.clone());
+    $("#result-b").append(newDiv.clone());
+    $("#result-b")[0].childNodes[0].id = "result-b-1";
+    $("#result-b")[0].childNodes[0].classList.add("results-text");
+    $("#result-b")[0].childNodes[1].id = "result-b-2";
+    $("#result-b")[0].childNodes[1].classList.add("results-text");
+    $("#result-b-1").append(txtPercentageB1);
+    $("#result-b-1").append(txtWinB);
+    $("#result-b-1")[0].childNodes[0].id = "result-b-1-percentage";
+    $("#result-b-1")[0].childNodes[1].id = "result-b-1-text";
+    $("#result-b-2").append(txtPercentageB2);
+    $("#result-b-2").append(txtNeutral);
+    $("#result-b-2")[0].childNodes[0].id = "result-b-2-percentage";
+    $("#result-b-2")[0].childNodes[1].id = "result-b-2-text";
 
     $("#main")[0].classList.add("animated", "fadeIn");
     centerContent();
@@ -190,10 +169,56 @@ function updateScreen(gameData) {
 
     let chanceA = gameData.questions[0][0].chance;
     let valueA = gameData.questions[0][0].value;
-    let backfireA = gameData.questions[0][0].backfire;
+    let backfireA = -gameData.questions[0][0].backfire;
 
     let chanceB = gameData.questions[0][1].chance;
     let valueB = gameData.questions[0][1].value;
+
+    let txtPercentageA1 = `${(100 * chanceA).toFixed(0)}%`;
+    let txtPercentageA2 = `${(100 * (1 - chanceA)).toFixed(0)}%`;
+    let txtPercentageB1 = `${(100 * chanceB).toFixed(0)}%`;
+    let txtPercentageB2 = `${(100 * (1 - chanceB)).toFixed(0)}%`;
+    let txtWinA = `+ ${valueA} power`;
+    let txtWinB = `+ ${valueB} power`;
+    let txtLose = `- ${backfireA} power`;
+
+    let scoreA = gameData.users[0].sum;
+    let scoreB = gameData.users[1].sum;
+    let scoreC = gameData.users[2].sum;
+    let scoreD = gameData.users[3].sum;
+
+    hasWon = gameData.lastTurn.hasWin;
+    choiceIndex = gameData.lastTurn.which;
+
+    if (hasWon) {
+        if (choiceIndex = 0) {
+            $("#redPill")[0].src = "assets/correct.png";
+        } else {
+            $("#bluePill")[0].src = "assets/wrong.png";
+        }
+    } else {
+        if (choiceIndex = 1) {
+
+        } else {
+
+        }
+    }
+
+    $("#scoreblock0Score")[0].innerHTML = `${scoreA}`;
+    $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
+    $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;
+    $("#scoreblock3Score")[0].innerHTML = `${scoreD}`;
+
+    $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
+    $("#result-a-1-text")[0].innerHTML = txtWinA;
+    $("#result-a-2-percentage")[0].innerHTML = txtPercentageA2;
+    $("#result-a-2-text")[0].innerHTML = txtLose;
+
+    $("#result-b-1-percentage")[0].innerHTML = txtPercentageB1;
+    $("#result-b-1-text")[0].innerHTML = txtWinB;
+    $("#result-b-2-percentage")[0].innerHTML = txtPercentageB2;
+    $("#result-b-2-text")[0].innerHTML = "Nothing happens";
+
 }
 
 // Add screen bullets

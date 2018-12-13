@@ -119,7 +119,6 @@ function myTurn(questions) {
 
     let chanceB = questions[0][1].chance;
     let valueB = questions[0][1].value;
-    // let backfireB = questions[0][1].backfire;
 
     let txtPercentageA1 = $("<div></div>").text(`${(100 * chanceA).toFixed(0)}%`);
     let txtPercentageA2 = $("<div></div>").text(`${(100 * (1 - chanceA)).toFixed(0)}%`);

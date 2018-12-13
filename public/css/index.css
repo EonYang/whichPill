@@ -133,7 +133,7 @@ table {
 /* Type */
 body {
 	font: 0.75em/1.65 'Helvetica Neue', sans-serif;
-	color: #000;
+	color: #333333;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-webkit-text-size-adjust: 100%;
@@ -141,7 +141,7 @@ body {
 }
 
 a {
-	color: #000;
+	color: #333333;
 	text-decoration: none;
 }
 
@@ -587,7 +587,7 @@ button {
 }
 
 button {
-	background-color: #000;
+	background-color: #333333;
 	border: none;
 	color: #fff;
 	margin: 0 auto;
@@ -639,7 +639,7 @@ button:focus {
 	border: none;
 	border-radius: 0;
 	background: #fff;
-	color: #000;
+	color: #333333;
 	font-family: "Noto Serif JP", serif;
 	font-size: 64px;
 	-webkit-appearance: none;
