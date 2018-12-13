@@ -229,7 +229,7 @@ function updateScreen(gameData) {
 
         for (i = 0; i< userNumber; i++) {
             let score = gameData.users[i].sum;
-            $("#scoreblock0Score")[i].innerHTML = `${score}`;
+            $(`#scoreblock${i}Score`)[i].innerHTML = `${score}`;
         }
         $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
         $("#result-a-1-text")[0].innerHTML = txtWinA;
