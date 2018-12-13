@@ -208,10 +208,10 @@ function updateScreen(gameData) {
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         if (choiceIndex = 0) {
             $("#redPill")[0].src = "assets/correct.png";
-            winSound.play();
+            // winSound.play();
         } else if (choiceIndex = 1) {
             $("#bluePill")[0].src = "assets/correct.png";
-            winSound.play();
+            // winSound.play();
         }
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         if (choiceIndex = 0) {
@@ -229,7 +229,7 @@ function updateScreen(gameData) {
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
-            $(`#scoreblock${i}`)[i].innerHTML = `${score}`;
+            $(`#scoreblock${i}Score`)[0].innerHTML = `${score}`;
         }
         $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
         $("#result-a-1-text")[0].innerHTML = txtWinA;

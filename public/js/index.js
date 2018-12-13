@@ -7,6 +7,7 @@ let nameAndRole = {
     cookie: ""
 };
 let gameSatus = 0; // 0: Preparing; 1: Started; 2: End
+let playerRefreshFirst = 0;
 let playerRefresh = 2;
 let endGameRefresh = 1;
 let decision = {
@@ -48,14 +49,13 @@ socket.on('gameState', function (data) {
     if (gameData.gameState == "inProgress") {
         
         if (nameAndRole.role == "Player" && returnUser) {
-            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefresh == 2) {
+            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefreshFirst == 0) {
                 if (gameData.whosTurn.name != gameData.lastTurn.name) {
                     myTurn(gameData.questions);
                 }
                 playerRefresh = 0;
             } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 0) {
                 othersTurn(gameData.whosTurn.name);
-                playerRefresh = 1;
             } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
                 othersTurnRefreshName(gameData.whosTurn.name);
             }
