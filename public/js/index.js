@@ -34,9 +34,17 @@ socket.on('gameState', function (data) {
     gameData = data;
 
     decision.who = gameData.whosTurn.name;
+    let returnUser = true;
+
+    let userNumber = gameData.users.length;
+    for (i = 0; i < userNumber; i++) {
+        if (nameAndRole.cookie == gameData.users[i].cookie) {
+            returnUser = true;
+        }
+    }
 
     if (gameData.gameState == "inProgress") {
-        if (nameAndRole.role == "Player") {
+        if (nameAndRole.role == "Player" && returnUser) {
             if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
                 if (gameData.whosTurn.name != gameData.lastTurn.name) {
                     myTurn(gameData.questions);
@@ -75,7 +83,6 @@ socket.on('gameState', function (data) {
 // Center the main div and set cookies
 $(window).on('load', function () {
     centerContent();
-    let cookie;
     // Generate cookie
     new Fingerprint2().get(function (result, components) {
         nameAndRole.cookie = result;

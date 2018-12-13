@@ -5,7 +5,7 @@ let refreshScreen = 1;
 let lastPlayer;
 
 var winSound = new Audio('assets/correct.mp3');
-var loseSOund = new Audio('assets/wrong.mp3');
+// var loseSOund = new Audio('assets/wrong.mp3');
 
 // Server
 socket.on('connect', function () {
@@ -56,6 +56,8 @@ function initScreen(gameData) {
         $("#main")[0].removeChild($("#main")[0].firstChild);
     }
 
+    userNumber = gameData.users.length;
+
     let newDiv = $("<div></div>");
     let newIcon = $("<img />");
 
@@ -83,10 +85,13 @@ function initScreen(gameData) {
     $("#infoScoreboard")[0].childNodes[0].id = "scoreboardBlockGroup";
 
     // Info Group - Scoreboard - Block
-    blockGenerator(0, gameData.users[0].name, gameData.users[0].sum);
-    blockGenerator(1, gameData.users[1].name, gameData.users[1].sum);
-    blockGenerator(2, gameData.users[2].name, gameData.users[2].sum);
-    blockGenerator(3, gameData.users[3].name, gameData.users[3].sum);
+    for (i = 0; i < userNumber; i++) {
+        blockGenerator(i, gameData.users[i].name, gameData.users[i].sum);
+    }
+    // blockGenerator(0, gameData.users[0].name, gameData.users[0].sum);
+    // blockGenerator(1, gameData.users[1].name, gameData.users[1].sum);
+    // blockGenerator(2, gameData.users[2].name, gameData.users[2].sum);
+    // blockGenerator(3, gameData.users[3].name, gameData.users[3].sum);
 
     // Turn Group
     $("#turnGroup").append(newDiv.clone());
@@ -171,6 +176,8 @@ function initScreen(gameData) {
 
 function updateScreen(gameData) {
 
+    userNumber = gameData.users.length;
+
     let chanceA = gameData.questions[0][0].chance;
     let valueA = gameData.questions[0][0].value;
     let backfireA = -gameData.questions[0][0].backfire;
@@ -186,10 +193,10 @@ function updateScreen(gameData) {
     let txtWinB = `+ ${valueB} power`;
     let txtLose = `- ${backfireA} power`;
 
-    let scoreA = gameData.users[0].sum;
-    let scoreB = gameData.users[1].sum;
-    let scoreC = gameData.users[2].sum;
-    let scoreD = gameData.users[3].sum;
+    // let scoreA = gameData.users[0].sum;
+    // let scoreB = gameData.users[1].sum;
+    // let scoreC = gameData.users[2].sum;
+    // let scoreD = gameData.users[3].sum;
 
     hasWon = gameData.lastTurn.hasWin;
     choiceIndex = gameData.lastTurn.which;
@@ -219,11 +226,11 @@ function updateScreen(gameData) {
         $("#turnTitle")[0].innerHTML = `${currentPlayer}'s Turn`;
         $("#redPill")[0].src = "assets/pill_red.png";
         $("#bluePill")[0].src = "assets/pill.png";
-        $("#scoreblock0Score")[0].innerHTML = `${scoreA}`;
-        $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
-        $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;
-        $("#scoreblock3Score")[0].innerHTML = `${scoreD}`;
 
+        for (i = 0; i< userNumber; i++) {
+            let score = gameData.users[i].sum;
+            $("#scoreblock0Score")[i].innerHTML = `${score}`;
+        }
         $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
         $("#result-a-1-text")[0].innerHTML = txtWinA;
         $("#result-a-2-percentage")[0].innerHTML = txtPercentageA2;
@@ -234,6 +241,10 @@ function updateScreen(gameData) {
         $("#result-b-2-percentage")[0].innerHTML = txtPercentageB2;
         $("#result-b-2-text")[0].innerHTML = "Nothing happens";
     }, 3000);
+
+    // $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
+    // $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;
+    // $("#scoreblock3Score")[0].innerHTML = `${scoreD}`;
 
     lastPlayer = gameData.whosTurn.name;
 }
