@@ -2,6 +2,10 @@ let socket = io('/');
 let gameData;
 var timers = [];
 let refreshScreen = 1;
+let lastPlayer;
+
+var winSound = new Audio('assets/correct.mp3');
+var loseSOund = new Audio('assets/wrong.mp3');
 
 // Server
 socket.on('connect', function () {
@@ -17,17 +21,17 @@ socket.on('gameState', function (data) {
     if (gameData.gameState == "inProgress" && refreshScreen == 1) {
         initScreen(gameData);
         refreshScreen = 0;
-    } else if (gameData.gameState == "inProgress" && refreshScreen == 0){
+    } else if (gameData.gameState == "inProgress" && refreshScreen == 0) {
         updateScreen(gameData);
     }
     console.log(data);
 });
 
-socket.on('sendChat', function(data) {
-    var jqueryDom = createScreenbullet("Yang yang has a little lamb.");
+socket.on('newChat', function (data) {
+    var jqueryDom = createScreenbullet(data);
     addInterval(jqueryDom);
     console.log(JSON.stringify(data));
-  });
+});
 
 // Center the main div and set cookies
 $(window).on('load', function () {
@@ -83,7 +87,7 @@ function initScreen(gameData) {
     blockGenerator(1, gameData.users[1].name, gameData.users[1].sum);
     blockGenerator(2, gameData.users[2].name, gameData.users[2].sum);
     blockGenerator(3, gameData.users[3].name, gameData.users[3].sum);
-    
+
     // Turn Group
     $("#turnGroup").append(newDiv.clone());
     $("#turnGroup").append(newDiv.clone());
@@ -189,36 +193,47 @@ function updateScreen(gameData) {
 
     hasWon = gameData.lastTurn.hasWin;
     choiceIndex = gameData.lastTurn.which;
+    currentPlayer = gameData.whosTurn.name;
+    round = gameData.round;
 
-    if (hasWon) {
+    
+
+    if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         if (choiceIndex = 0) {
             $("#redPill")[0].src = "assets/correct.png";
         } else {
-            $("#bluePill")[0].src = "assets/wrong.png";
+            $("#bluePill")[0].src = "assets/correct.png";
         }
-    } else {
+    } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         if (choiceIndex = 1) {
-
+            $("#redPill")[0].src = "assets/wrong.png";
         } else {
-
+            $("#bluePill")[0].src = "assets/wrong.png";
         }
     }
 
-    $("#scoreblock0Score")[0].innerHTML = `${scoreA}`;
-    $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
-    $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;
-    $("#scoreblock3Score")[0].innerHTML = `${scoreD}`;
+    setTimeout(function () {
+        $("#roundTitle")[0].innerHTML = `Round ${round}`;
+        $("#turnTitle")[0].innerHTML = `${currentPlayer}'s Turn`;
+        $("#redPill")[0].src = "assets/pill_red.png";
+        $("#bluePill")[0].src = "assets/pill.png";
+        $("#scoreblock0Score")[0].innerHTML = `${scoreA}`;
+        $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
+        $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;
+        $("#scoreblock3Score")[0].innerHTML = `${scoreD}`;
 
-    $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
-    $("#result-a-1-text")[0].innerHTML = txtWinA;
-    $("#result-a-2-percentage")[0].innerHTML = txtPercentageA2;
-    $("#result-a-2-text")[0].innerHTML = txtLose;
+        $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
+        $("#result-a-1-text")[0].innerHTML = txtWinA;
+        $("#result-a-2-percentage")[0].innerHTML = txtPercentageA2;
+        $("#result-a-2-text")[0].innerHTML = txtLose;
 
-    $("#result-b-1-percentage")[0].innerHTML = txtPercentageB1;
-    $("#result-b-1-text")[0].innerHTML = txtWinB;
-    $("#result-b-2-percentage")[0].innerHTML = txtPercentageB2;
-    $("#result-b-2-text")[0].innerHTML = "Nothing happens";
+        $("#result-b-1-percentage")[0].innerHTML = txtPercentageB1;
+        $("#result-b-1-text")[0].innerHTML = txtWinB;
+        $("#result-b-2-percentage")[0].innerHTML = txtPercentageB2;
+        $("#result-b-2-text")[0].innerHTML = "Nothing happens";
+    }, 3000);
 
+    lastPlayer = gameData.whosTurn.name;
 }
 
 // Add screen bullets
@@ -255,13 +270,12 @@ function addInterval(jqueryDom) {
 }
 
 function blockGenerator(id, name, score) {
-    console.log(`scoreblock${id}`);
     let newDiv = $("<div></div>");
     let blockId = `scoreblock${id}`;
     capName = jsUcfirst(name);
     $("#scoreboardBlockGroup").append(newDiv.clone());
     $("#scoreboardBlockGroup")[0].childNodes[`${id}`].id = blockId;
-    
+
     $(`#${blockId}`).append(newDiv.clone());
     $(`#${blockId}`).append(newDiv.clone());
     $(`#${blockId}`)[0].classList.add("blocks");
@@ -276,5 +290,5 @@ function blockGenerator(id, name, score) {
     } else {
         $(`#${blockId}Score`)[0].innerHTML = `${score}`;
     }
-    
+
 }

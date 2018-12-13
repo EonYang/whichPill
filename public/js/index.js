@@ -13,6 +13,7 @@ let decision = {
     who: "",
     choice: 2
 };
+let name;
 
 let textField = $("#search")[0];
 
@@ -56,7 +57,7 @@ socket.on('gameState', function (data) {
                         textField.classList.remove("input__label--error");
                     }, 300);
                 } else {
-                    let chat = $("#input-4").val();
+                    let chat = `${nameAndRole.name} said ${$("#input-4").val()}`;
                     socket.emit('sendChat', chat);
                 }
             });
@@ -67,6 +68,7 @@ socket.on('gameState', function (data) {
     }
     console.log(data);
 });
+
 
 // Client
 
@@ -153,11 +155,6 @@ function myTurn(questions) {
     $("#result-a-2")[0].childNodes[0].id = "result-a-2-percentage";
     $("#result-a-2")[0].childNodes[1].id = "result-a-2-text";
 
-    // let txt1 = $("<span></span>").text(`You have ${(100 * chanceA).toFixed(0)}% chance to win ${valueA} with a backfire of ${backfireA}!`);
-    // $("#choice-a").append(newDiv.clone());
-    // $("#choice-a")[0].childNodes[0].id = "result-a"
-    // $("#result-a").append(txt1);
-
     // Choice B
     $("#choice-b").append(newIcon.clone());
     $("#choice-b").append(newDiv.clone());
@@ -181,11 +178,6 @@ function myTurn(questions) {
     $("#result-b-2").append(txtNeutral);
     $("#result-b-2")[0].childNodes[0].id = "result-b-2-percentage";
     $("#result-b-2")[0].childNodes[1].id = "result-b-2-text";
-
-    // let txt2 = $("<span></span>").text(`You have ${(100 * chanceB).toFixed(0)}% chance to win ${valueB} with a backfire of ${backfireB}!`);
-    // $("#choice-b").append(newDiv.clone());
-    // $("#choice-b")[0].childNodes[0].id = "result-b"
-    // $("#result-b").append(txt2);
 
     // // Add sumbit button
     $("#choiceGroup").append(newDiv.clone());
@@ -329,8 +321,8 @@ $("#main")[0].addEventListener("click", function (e) {
         case "button-confirm":
             {
                 if (decision.choice != 2) {
+                    decision.who = nameAndRole.name;
                     socket.emit("makeChoice", decision);
-
                     othersTurn();
                 }
                 break;
