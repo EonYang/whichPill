@@ -40,10 +40,9 @@ socket.on('gameState', function (data) {
     for (i = 0; i < userNumber; i++) {
         if (nameAndRole.cookie == gameData.users[i].cookie) {
             returnUser = true;
+            nameAndRole.role = gameData.users[i].name;
         }
     }
-    console.log("fired");
-    console.log(returnUser);
 
     if (gameData.gameState == "inProgress") {
         if (nameAndRole.role == "Player" && returnUser) {
@@ -77,7 +76,6 @@ socket.on('gameState', function (data) {
         endGameRefresh = 0;
     }
     console.log(data);
-    console.log("fired");
 });
 
 
