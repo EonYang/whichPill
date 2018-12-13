@@ -201,13 +201,15 @@ function updateScreen(gameData) {
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         if (choiceIndex = 0) {
             $("#redPill")[0].src = "assets/correct.png";
-        } else {
+            winSound.play();
+        } else if (choiceIndex = 1) {
             $("#bluePill")[0].src = "assets/correct.png";
+            winSound.play();
         }
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        if (choiceIndex = 1) {
+        if (choiceIndex = 0) {
             $("#redPill")[0].src = "assets/wrong.png";
-        } else {
+        } else if (choiceIndex = 1){
             $("#bluePill")[0].src = "assets/wrong.png";
         }
     }
