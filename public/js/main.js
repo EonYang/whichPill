@@ -97,12 +97,18 @@ function initScreen(gameData) {
     $("#scoreboardTitle")[0].classList.add("title");
 
     // Info Group - Scoreboard - Block
-    blockGenerator(0, gameData.users[0].name, gameData.users[0].score);
-    blockGenerator(1, gameData.users[1].name, gameData.users[1].score);
-    blockGenerator(2, gameData.users[2].name, gameData.users[2].score);
-    blockGenerator(3, gameData.users[3].name, gameData.users[3].score);
+    blockGenerator(0, gameData.users[0].name, gameData.users[0].scores);
+    blockGenerator(1, gameData.users[1].name, gameData.users[1].scores);
+    blockGenerator(2, gameData.users[2].name, gameData.users[2].scores);
+    blockGenerator(3, gameData.users[3].name, gameData.users[3].scores);
     
-
+    // Turn Group
+    $("#turnGroup").append(newDiv.clone());
+    $("#turnGroup").append(newDiv.clone());
+    $("#turnGroup").append(newDiv.clone());
+    $("#turnGroup")[0].childNodes[0].id = "turnRedPill";
+    $("#turnGroup")[0].childNodes[1].id = "turnVs";
+    $("#turnGroup")[0].childNodes[1].id = "turnBluePill";
 
 
 
@@ -227,6 +233,7 @@ function blockGenerator(id, name, score) {
     console.log(`scoreblock${id}`);
     let newDiv = $("<div></div>");
     let blockId = `scoreblock${id}`;
+    capName = jsUcfirst(name);
     $("#scoreboardBlockGroup").append(newDiv.clone());
     $("#scoreboardBlockGroup")[0].childNodes[`${id}`].id = blockId;
     
@@ -238,6 +245,11 @@ function blockGenerator(id, name, score) {
 
     $(`#${blockId}Name`)[0].classList.add("blockTitle");
     $(`#${blockId}Score`)[0].classList.add("blockText");
-    $(`#${blockId}Name`)[0].innerHTML = `${name}`;
-    $(`#${blockId}Score`)[0].innerHTML = `${score}`;
+    $(`#${blockId}Name`)[0].innerHTML = `${capName}`;
+    if (score == 0) {
+        $(`#${blockId}Score`)[0].innerHTML = "0";
+    } else {
+        $(`#${blockId}Score`)[0].innerHTML = `${score}`;
+    }
+    
 }
