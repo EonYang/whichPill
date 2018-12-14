@@ -24,7 +24,7 @@ class GAME {
     }
   }
 
-  isThisANewPlayer(cookie, socketId){
+  isThisANewPlayer(cookie, socketId) {
     let r;
     let index = tool.FindIndexByCookie(this.users, cookie);
     if (index != -1) {
@@ -38,10 +38,10 @@ class GAME {
     return [r, index];
   }
   retriveUser(cookie, socketId, index) {
-      // save his new socket id.
-      this.users[index].socketId = socketId;
-      this.users[index].online = true;
-      console.log(`${this.users[index]} is coming back`);
+    // save his new socket id.
+    this.users[index].socketId = socketId;
+    this.users[index].online = true;
+    console.log(`${this.users[index]} is coming back`);
   }
 
   userLeavesGame(userSocketId) {
@@ -162,7 +162,7 @@ class GAME {
 
   storeUserChoice(userSocket, choice) {
     let userIndex = tool.FindIndexBySocket(this.users, userSocket);
-    if (userIndex  == -1 ) {
+    if (userIndex == -1) {
       console.log(`a unknown user made a choice, sockie id : ${userSocket}`);
     }
     if (this.state == 'inProgress' && userIndex >= 0) {
@@ -196,7 +196,8 @@ class GAME {
 
       // console.log(`${this.lastTurn}`);
       this.users[userIndex].scores.push(gain);
-      this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
+      this.users[userIndex].sum += gain
+      // this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
       this.nextTurn();
       return win
     }
@@ -275,13 +276,13 @@ class GAME {
     // add a 2 seconds delay
     let self = this;
     console.log('making choice for offline people, in 2 sec');
-    setTimeout(function () {
+    setTimeout(function() {
       let i = tool.FindIndexBySocket(self.users, userSocket);
       let choice = Math.random() > 0.5 ? 0 : 1;
       console.log(`${self.users[i].name} is offline, we made a random choice for him`);
       self.storeUserChoice(userSocket, choice);
       io.emit('gameState', self.getGameData());
-    },2000);
+    }, 2000);
 
   }
 }
