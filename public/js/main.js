@@ -247,8 +247,6 @@ function updateScreen(gameData) {
         let newIcon = $("<img />");
 
         $("#main").append(newDiv.clone());
-
-        winSound.play();
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/lose.gif";
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
