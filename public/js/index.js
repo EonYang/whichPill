@@ -70,7 +70,7 @@ socket.on('gameState', function (data) {
                 } else {
                     let chat = `${nameAndRole.name} said ${$("#input-4").val()}`;
                     socket.emit('sendChat', chat);
-                    $("#input-4").val() == "";
+                    document.getElementById("input-4").value = "";
                 }
             });
         }
