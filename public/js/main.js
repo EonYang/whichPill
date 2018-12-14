@@ -80,7 +80,6 @@ socket.on('gameState', function (data) {
         }
         centerContent();
     }
-
     console.log(data);
 });
 
@@ -305,8 +304,12 @@ function updateScreen(gameData) {
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
+            let name = gameData.users[i].name;
+            capName = jsUcfirst(name);
             $(`#scoreblock${i}Score`)[0].innerHTML = `${score}`;
+            $(`#scoreblock${i}Name`)[0].innerHTML = `${capName}`;
         }
+
         $("#result-a-1-percentage")[0].innerHTML = txtPercentageA1;
         $("#result-a-1-text")[0].innerHTML = txtWinA;
         $("#result-a-2-percentage")[0].innerHTML = txtPercentageA2;

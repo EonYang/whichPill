@@ -75,12 +75,9 @@ socket.on('gameState', function (data) {
                 if (gameData.whosTurn.name != gameData.lastTurn.name) {
                     myTurn(gameData.questions);
                 }
-                afterYourTurn = true;
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && afterYourTurn == true) {
+            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase()) {
                 othersTurn(gameData.whosTurn.name);
-                afterYourTurn = false;
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && afterYourTurn == false) {
-                othersTurnRefreshName(gameData.whosTurn.name);
+                // othersTurnRefreshName(gameData.whosTurn.name);
             }
         } else if (nameAndRole.role == "Audience") {
             if (firstComment == 1) {
@@ -243,7 +240,8 @@ function othersTurn(whosTurn) {
     var newIcon = $("<img />");
     $("#main").append(newIcon);
     $("#main")[0].firstChild.src = "assets/hourglass.png";
-    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+    $("#main")[0].firstChild.classList.add("image");
+    // $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
     var newDiv = $("<div></div>").text(`Stay calm and wait for ${whosTurn}...`);
     $("#main").append(newDiv);
