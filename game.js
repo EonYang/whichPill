@@ -178,6 +178,7 @@ class GAME {
         gain = q[choice].value;
         console.log(`wins ${gain}`);
       } else {
+        win = false;
         gain = q[choice].backfire;
         console.log(`doesn't win, lose ${gain}`);
       }
@@ -193,6 +194,7 @@ class GAME {
       this.users[userIndex].scores.push(gain);
       this.users[userIndex].sum = (this.users[userIndex].sum + gain) > 0 ? (this.users[userIndex].sum + gain) : 0;
       this.nextTurn();
+      return win
     }
   }
 

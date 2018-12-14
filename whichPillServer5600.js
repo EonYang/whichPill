@@ -54,8 +54,13 @@ web.on('connection', function(socket) {
 
   socket.on('makeChoice', function(data) {
     console.log(JSON.stringify(data));
-    game.storeUserChoice(socket.id, data.choice);
+    let win = game.storeUserChoice(socket.id, data.choice);
     io.emit('gameState', game.getGameData());
+    if (win) {
+      io.emit('showGif', 1);
+    }else {
+      io.emit('showGif', 0);
+    }
   });
 
   socket.on('sendChat', function(data) {
