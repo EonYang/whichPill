@@ -34,7 +34,7 @@ socket.on('gameState', function (data) {
         updateScreen(gameData);
     } else if (gameData.gameState == "ended") {
         endGame(gameData);
-        
+
         let hasWon = gameData.lastTurn.hasWin;
 
         let index = document.getElementById("main").childElementCount;
@@ -61,7 +61,22 @@ socket.on('gameState', function (data) {
         setTimeout(function () {
             $("#giffy").remove();
         }, 6000);
+    } else if (gameData.gameState == "prep") {
+        if (gameData.users.length > 0) {
+            let newDiv = $("<div></div>");
+            for (i = 0; i < gameData.users.length; i++) {
+                let index = document.getElementById("main").childElementCount;
+                $("#main").append(newDiv.clone());
+                console.log(index);
+                $("#main")[0].children[index].id = `playerJoin${index}`;
+
+                $(`#playerJoin${index}`)[0].classList.add("description-join");
+                $(`#playerJoin${index}`)[0].innerHTML = `${gameData.users[i].name} has joined!`
+            }
+        }
+        centerContent();
     }
+
     console.log(data);
 });
 
@@ -74,7 +89,6 @@ socket.on('newChat', function (data) {
 
 
 socket.on('userHover', function (data) {
-    console.log(data);
     if (data == 0) {
         $("#choice-a")[0].style.borderColor = "#0F15AE";
         $("#choice-b")[0].style.borderColor = "white";

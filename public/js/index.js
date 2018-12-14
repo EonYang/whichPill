@@ -95,7 +95,7 @@ socket.on('gameState', function (data) {
                         textField.classList.remove("input__label--error");
                     }, 300);
                 } else {
-                    let chat = `${nameAndRole.name} said ${$("#input-4").val()}`;
+                    let chat = `${nameAndRole.name} says ${$("#input-4").val()}`;
                     socket.emit('sendChat', chat);
                     document.getElementById("input-4").value = "";
                 }
