@@ -2,7 +2,7 @@ const tool = require('./tool.js');
 const game = require('./game.js');
 // const sime = require('./sim.js');
 const express = require('express');
-const port = 5600;
+const port = 80;
 const ioPort = 5600;
 const app = express();
 app.use(express.static('public'));
