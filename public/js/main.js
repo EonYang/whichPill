@@ -222,16 +222,17 @@ function updateScreen(gameData) {
 
 
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
+        console.log("WON GIF!");
         let newDiv = $("<div></div>");
-        let newIcon = $("<img />");
-
-        $("#main").append(newDiv.clone());
+        let newIframe = $("<iframe></iframe>");
+        // let txtPercentageA1 = $("<iframe></iframe>").text(`${(100 * chanceA).toFixed(0)}%`);
+        // <iframe src="https://giphy.com/embed/2tNt3yLVozKj34DE8A" width="480" height="267" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
         // if (choiceIndex = 0) {
         //     $("#redPill")[0].src = "assets/correct.png";
         // } else if (choiceIndex = 1) {
         //     $("#bluePill")[0].src = "assets/correct.png";
         // }
-
+        let newIcon = $("<img />");
         // winSound.play();
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/win.gif";
@@ -245,8 +246,6 @@ function updateScreen(gameData) {
         // }
         let newDiv = $("<div></div>");
         let newIcon = $("<img />");
-
-        $("#main").append(newDiv.clone());
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/lose.gif";
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
@@ -276,7 +275,7 @@ function updateScreen(gameData) {
         $("#result-b-1-text")[0].innerHTML = txtWinB;
         $("#result-b-2-percentage")[0].innerHTML = txtPercentageB2;
         $("#result-b-2-text")[0].innerHTML = "Nothing happens";
-    }, 3000);
+    }, 6000);
 
     // $("#scoreblock1Score")[0].innerHTML = `${scoreB}`;
     // $("#scoreblock2Score")[0].innerHTML = `${scoreC}`;

@@ -722,8 +722,7 @@ button:focus {
 }
 
 .gif {
-	width: 300px;
-	height: 250px;
+	width: 80%;
 	position: absolute;
 	left: 0;
 	right: 0;
