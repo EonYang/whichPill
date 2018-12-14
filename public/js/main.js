@@ -23,6 +23,8 @@ socket.on('gameState', function (data) {
         refreshScreen = 0;
     } else if (gameData.gameState == "inProgress" && refreshScreen == 0) {
         updateScreen(gameData);
+    } else if (gameData.gameState == "endGame") {
+        endGame(gameData);
     }
     console.log(data);
 });
@@ -230,10 +232,10 @@ function updateScreen(gameData) {
         //     $("#bluePill")[0].src = "assets/correct.png";
         // }
 
-        winSound.play();
-            $("#main").append(newIcon.clone());
-            $("#main")[0].childNodes[2].src = "assets/win.gif";
-            $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
+        // winSound.play();
+        $("#main").append(newIcon.clone());
+        $("#main")[0].childNodes[2].src = "assets/win.gif";
+        $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
 
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         // if (choiceIndex = 0) {
@@ -247,9 +249,9 @@ function updateScreen(gameData) {
         $("#main").append(newDiv.clone());
 
         winSound.play();
-            $("#main").append(newIcon.clone());
-            $("#main")[0].childNodes[2].src = "assets/lose.gif";
-            $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
+        $("#main").append(newIcon.clone());
+        $("#main")[0].childNodes[2].src = "assets/lose.gif";
+        $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
     }
 
     setTimeout(function () {
@@ -340,4 +342,32 @@ function blockGenerator(id, name, score) {
         $(`#${blockId}Score`)[0].innerHTML = `${score}`;
     }
 
+}
+
+function endGame(data) {
+    let maxSum = data.users[0].sum;
+    let userNumber = data.users.length;
+    let maxIndex;
+    for (i = 0; i < userNumber; i++) {
+        if (data.users[i].sum > maxSum) {
+            maxIndex = i;
+        }
+    }
+
+    // Remove old elements
+    while ($("#main")[0].firstChild) {
+        $("#main")[0].removeChild($("#main")[0].firstChild);
+    }
+
+    // Add new elements
+    var newIcon = $("<img />");
+    $("#main").append(newIcon);
+    $("#main")[0].firstChild.src = "assets/pill.png";
+    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+
+    var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
+    $("#main").append(newDiv);
+    $("#main")[0].childNodes[1].classList.add("description", "animated", "fadeIn", "slow");
+
+    centerContent();
 }
