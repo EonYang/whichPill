@@ -417,3 +417,11 @@ function blockGeneratorEnded(id, name, score) {
     $(`#${blockId}Score`)[0].innerHTML = `${score}`;
 
 }
+
+function start() {
+    socket.emit("startGame");
+}
+
+function reset() {
+    socket.emit("resetGame");
+}

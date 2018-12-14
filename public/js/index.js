@@ -460,3 +460,11 @@ $("#main")[0].addEventListener("click", function (e) {
 
 
 });
+
+function start() {
+    socket.emit("startGame");
+}
+
+function reset() {
+    socket.emit("resetGame");
+}
