@@ -44,9 +44,31 @@ socket.on('gameState', function (data) {
             nameAndRole.name = gameData.users[i].name;
         }
     }
+    if (nameAndRole.name != "" && gameData.gameState == "prep") {
+        // Remove old elements
+        setTimeout(function () {
+            while ($("#main")[0].firstChild) {
+                $("#main")[0].removeChild($("#main")[0].firstChild);
+            }
+        }, 200);
 
-    if (gameData.gameState == "inProgress") {
-        
+        // Wait for the game to start
+        if (gameSatus == 0) {
+            setTimeout(function () {
+                // Add new elements
+                var newIcon = $("<img />");
+                $("#main").append(newIcon);
+                $("#main")[0].firstChild.src = "assets/hourglass.png";
+                $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+
+                var newDiv = $("<div></div>").text("Waiting for the game to start...");
+                $("#main").append(newDiv);
+                $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
+
+                centerContent();
+            }, 200);
+        }
+    } else if (gameData.gameState == "inProgress") {
         if (nameAndRole.role == "Player" && returnUser) {
             if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase()) {
                 if (gameData.whosTurn.name != gameData.lastTurn.name) {
@@ -302,13 +324,13 @@ $("#main")[0].addEventListener("click", function (e) {
     switch (e.target.id) {
         case "choice-a":
         case "redPill":
-        case "result-a": 
-        case "result-a-1": 
-        case "result-a-2": 
-        case "result-a-1-percentage": 
-        case "result-a-1-text": 
-        case "result-a-2-percentage": 
-        case "result-a-2-text": 
+        case "result-a":
+        case "result-a-1":
+        case "result-a-2":
+        case "result-a-1-percentage":
+        case "result-a-1-text":
+        case "result-a-2-percentage":
+        case "result-a-2-text":
             {
                 decision.choice = 0;
                 $("#choice-a")[0].classList.add("choice-a-tick");
@@ -319,12 +341,12 @@ $("#main")[0].addEventListener("click", function (e) {
 
         case "choice-b":
         case "bluePill":
-        case "result-b": 
-        case "result-b-1": 
-        case "result-b-2": 
-        case "result-b-1-percentage": 
-        case "result-b-1-text": 
-        case "result-b-2-percentage": 
+        case "result-b":
+        case "result-b-1":
+        case "result-b-2":
+        case "result-b-1-percentage":
+        case "result-b-1-text":
+        case "result-b-2-percentage":
         case "result-b-2-text":
             {
                 decision.choice = 1;
@@ -396,29 +418,29 @@ $("#main")[0].addEventListener("click", function (e) {
                     $("#role")[0].classList.add("animated", "fadeOut");
                     $("#role")[0].style.animationDuration = "0.2s";
 
-                    // Remove old elements
-                    setTimeout(function () {
-                        while ($("#main")[0].firstChild) {
-                            $("#main")[0].removeChild($("#main")[0].firstChild);
-                        }
-                    }, 200);
+                    // // Remove old elements
+                    // setTimeout(function () {
+                    //     while ($("#main")[0].firstChild) {
+                    //         $("#main")[0].removeChild($("#main")[0].firstChild);
+                    //     }
+                    // }, 200);
 
-                    // Wait for the game to start
-                    if (gameSatus == 0) {
-                        setTimeout(function () {
-                            // Add new elements
-                            var newIcon = $("<img />");
-                            $("#main").append(newIcon);
-                            $("#main")[0].firstChild.src = "assets/hourglass.png";
-                            $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+                    // // Wait for the game to start
+                    // if (gameSatus == 0) {
+                    //     setTimeout(function () {
+                    //         // Add new elements
+                    //         var newIcon = $("<img />");
+                    //         $("#main").append(newIcon);
+                    //         $("#main")[0].firstChild.src = "assets/hourglass.png";
+                    //         $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
-                            var newDiv = $("<div></div>").text("Waiting for the game to start...");
-                            $("#main").append(newDiv);
-                            $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
+                    //         var newDiv = $("<div></div>").text("Waiting for the game to start...");
+                    //         $("#main").append(newDiv);
+                    //         $("#main")[0].childNodes[1].classList.add("description-waiting", "animated", "infinite", "flash", "slower");
 
-                            centerContent();
-                        }, 200);
-                    }
+                    //         centerContent();
+                    //     }, 200);
+                    // }
                 }
                 break;
             }

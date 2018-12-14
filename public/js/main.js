@@ -217,22 +217,39 @@ function updateScreen(gameData) {
     currentPlayer = gameData.whosTurn.name;
     round = gameData.round;
 
-    
+
 
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        if (choiceIndex = 0) {
-            $("#redPill")[0].src = "assets/correct.png";
-            // winSound.play();
-        } else if (choiceIndex = 1) {
-            $("#bluePill")[0].src = "assets/correct.png";
-            // winSound.play();
-        }
+        let newDiv = $("<div></div>");
+        let newIcon = $("<img />");
+
+        $("#main").append(newDiv.clone());
+        // if (choiceIndex = 0) {
+        //     $("#redPill")[0].src = "assets/correct.png";
+        // } else if (choiceIndex = 1) {
+        //     $("#bluePill")[0].src = "assets/correct.png";
+        // }
+
+        winSound.play();
+            $("#main").append(newIcon.clone());
+            $("#main")[0].childNodes[2].src = "assets/win.gif";
+            $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
+
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        if (choiceIndex = 0) {
-            $("#redPill")[0].src = "assets/wrong.png";
-        } else if (choiceIndex = 1){
-            $("#bluePill")[0].src = "assets/wrong.png";
-        }
+        // if (choiceIndex = 0) {
+        //     $("#redPill")[0].src = "assets/wrong.png";
+        // } else if (choiceIndex = 1) {
+        //     $("#bluePill")[0].src = "assets/wrong.png";
+        // }
+        let newDiv = $("<div></div>");
+        let newIcon = $("<img />");
+
+        $("#main").append(newDiv.clone());
+
+        winSound.play();
+            $("#main").append(newIcon.clone());
+            $("#main")[0].childNodes[2].src = "assets/lose.gif";
+            $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
     }
 
     setTimeout(function () {
@@ -243,6 +260,8 @@ function updateScreen(gameData) {
 
         $("#choice-a")[0].style.borderColor = "white";
         $("#choice-b")[0].style.borderColor = "white";
+
+        $("#main")[0].removeChild($("#main")[0].childNodes[2]);
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
