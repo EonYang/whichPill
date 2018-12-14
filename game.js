@@ -63,7 +63,8 @@ class GAME {
   }
 
   addUser(name, socketId, role, cookie) {
-    if (this.state == 'prep' && role == 'Player') {
+    let index = tool.FindIndexByCookie(this.users, cookie);
+    if (this.state == 'prep' && role == 'Player' && index == -1 ) {
       let data = {
         name: name,
         socketId: socketId,
