@@ -33,18 +33,21 @@ socket.on('newChat', function (data) {
     console.log(JSON.stringify(data));
 });
 
+
+
 socket.on('userHover', function (data) {
     if (data == 0) {
         $("#choice-a")[0].classList.add("choice-a-chosen");
-        $("#choice-a")[1].classList.remove("choice-a-chosen");
+        $("#choice-b")[0].classList.remove("choice-a-chosen");
     } else if (data == 1) {
-        $("#choice-a")[1].classList.add("choice-a-chosen");
+        $("#choice-b")[0].classList.add("choice-a-chosen");
         $("#choice-a")[0].classList.remove("choice-a-chosen");
     }
 });
 
 // Center the main div and set cookies
 $(window).on('load', function () {
+    socket.emit("sendCookie", "ck");
     centerContent();
 });
 
@@ -236,8 +239,9 @@ function updateScreen(gameData) {
         $("#turnTitle")[0].innerHTML = `${currentPlayer}'s Turn`;
         $("#redPill")[0].src = "assets/pill_red.png";
         $("#bluePill")[0].src = "assets/pill.png";
+
         $("#choice-a")[0].classList.remove("choice-a-chosen");
-        $("#choice-a")[1].classList.remove("choice-a-chosen");
+        $("#choice-b")[0].classList.remove("choice-a-chosen");
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;

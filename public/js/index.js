@@ -85,12 +85,12 @@ socket.on('gameState', function (data) {
 
 // Center the main div and set cookies
 $(window).on('load', function () {
-    centerContent();
     // Generate cookie
     new Fingerprint2().get(function (result, components) {
         nameAndRole.cookie = result;
         socket.emit("sendCookie", nameAndRole.cookie);
     });
+    centerContent();
 });
 
 $(window).on('resize', function () {
