@@ -7,8 +7,7 @@ let nameAndRole = {
     cookie: ""
 };
 let gameSatus = 0; // 0: Preparing; 1: Started; 2: End
-let playerRefreshFirst = 0;
-let playerRefresh = 2;
+let afterYourTurn = false;
 let endGameRefresh = 1;
 let decision = {
     who: "",
@@ -49,14 +48,15 @@ socket.on('gameState', function (data) {
     if (gameData.gameState == "inProgress") {
         
         if (nameAndRole.role == "Player" && returnUser) {
-            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase() && playerRefreshFirst == 0) {
+            if (nameAndRole.name.toLowerCase() == gameData.whosTurn.name.toLowerCase()) {
                 if (gameData.whosTurn.name != gameData.lastTurn.name) {
                     myTurn(gameData.questions);
                 }
-                playerRefresh = 0;
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 0) {
+                afterYourTurn = true;
+            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && afterYourTurn == true) {
                 othersTurn(gameData.whosTurn.name);
-            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && playerRefresh == 1) {
+                afterYourTurn = false;
+            } else if (nameAndRole.name.toLowerCase() != gameData.whosTurn.name.toLowerCase() && afterYourTurn == false) {
                 othersTurnRefreshName(gameData.whosTurn.name);
             }
         } else if (nameAndRole.role == "Audience") {
