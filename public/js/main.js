@@ -3,9 +3,8 @@ let gameData;
 var timers = [];
 let refreshScreen = 1;
 let lastPlayer;
-
-var winSound = new Audio('assets/correct.mp3');
-// var loseSOund = new Audio('assets/wrong.mp3');
+let winSound;
+let loseSound;
 
 function preload() {
     soundFormats('mp3', 'ogg');
