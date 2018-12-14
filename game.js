@@ -71,7 +71,7 @@ class GAME {
         cookie: cookie,
         scores: [],
         online: true,
-        sum: 200,
+        sum: 0,
         hasPlayedInThisRound: false,
       }
       this.users.push(data);
