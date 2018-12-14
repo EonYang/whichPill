@@ -161,8 +161,9 @@ class GAME {
   }
 
   storeUserChoice(userSocket, choice) {
-    if (this.state == 'inProgress') {
-      let userIndex = tool.FindIndexBySocket(this.users, userSocket);
+    let userIndex = tool.FindIndexBySocket(this.users, userSocket);
+    if (this.state == 'inProgress' && userIndex >= 0) {
+
       let user = this.users[userIndex];
 
       console.log(`${user.name} made a choise `);
