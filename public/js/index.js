@@ -230,8 +230,9 @@ function othersTurnRefreshName(whosTurn) {
 
 function endGame(data) {
     let maxSum = data.users[0].sum;
+    let userNumber = data.users.length;
     let maxIndex;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < userNumber; i++) {
         if (data.users[i].sum > maxSum) {
             maxIndex = i;
         }
