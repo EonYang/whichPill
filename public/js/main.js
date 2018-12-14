@@ -3,14 +3,17 @@ let gameData;
 var timers = [];
 let refreshScreen = 1;
 let lastPlayer;
-let winSound;
-let loseSound;
+var winSound;
+var loseSound;
 
 function preload() {
     soundFormats('mp3', 'ogg');
     winSound = loadSound('assets/win.mp3');
     loseSound = loadSound('assets/lose.mp3');
 }
+
+function setup() {}
+function draw() {}
 
 // Server
 socket.on('connect', function () {
@@ -227,7 +230,7 @@ function updateScreen(gameData) {
 
 
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        winSound.playMode('restart');
+        // winSound.playMode('restart');
         winSound.play();
         let newIcon = $("<img />");
         $("#main").append(newIcon.clone());
@@ -235,7 +238,7 @@ function updateScreen(gameData) {
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
 
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        loseSound.playMode('restart');
+        // loseSound.playMode('restart');
         loseSound.play();
         let newIcon = $("<img />");
         $("#main").append(newIcon.clone());
