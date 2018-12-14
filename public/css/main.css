@@ -409,7 +409,9 @@ button {
 }
 
 .choice-a-chosen {
+	border-style: solid;
 	border-color: #0F15AE;
+	border-width: 4px;
 }
 
 #choiceGroup {

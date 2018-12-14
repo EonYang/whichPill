@@ -36,12 +36,13 @@ socket.on('newChat', function (data) {
 
 
 socket.on('userHover', function (data) {
+    console.log(data);
     if (data == 0) {
-        $("#choice-a")[0].classList.add("choice-a-chosen");
-        $("#choice-b")[0].classList.remove("choice-a-chosen");
+        $("#choice-a")[0].style.borderColor = "#0F15AE";
+        $("#choice-b")[0].style.borderColor = "white";
     } else if (data == 1) {
-        $("#choice-b")[0].classList.add("choice-a-chosen");
-        $("#choice-a")[0].classList.remove("choice-a-chosen");
+        $("#choice-b")[0].style.borderColor = "#0F15AE";
+        $("#choice-a")[0].style.borderColor = "white";
     }
 });
 
@@ -240,8 +241,8 @@ function updateScreen(gameData) {
         $("#redPill")[0].src = "assets/pill_red.png";
         $("#bluePill")[0].src = "assets/pill.png";
 
-        $("#choice-a")[0].classList.remove("choice-a-chosen");
-        $("#choice-b")[0].classList.remove("choice-a-chosen");
+        $("#choice-a")[0].style.borderColor = "white";
+        $("#choice-b")[0].style.borderColor = "white";
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
