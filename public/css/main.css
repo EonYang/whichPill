@@ -390,6 +390,9 @@ button {
 	margin-bottom: 20px;
 	background: white;
 	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	border-style: solid;
+	border-color: white;
+	border-width: 4px;
 }
 
 #choice-b {
@@ -400,6 +403,13 @@ button {
 	margin-bottom: 20px;
 	background: white;
 	box-shadow: 0px 4px 30px -9px rgba(51, 51, 51, 0.75);
+	border-style: solid;
+	border-color: white;
+	border-width: 4px;
+}
+
+.choice-a-chosen {
+	border-color: #0F15AE;
 }
 
 #choiceGroup {
@@ -630,9 +640,21 @@ button:focus {
 	border-radius: 12px;
 	margin: auto;
 	margin-bottom: 36px;
-	/* background: white;
-	border-style: solid;
+	background: white;
+	/* border-style: solid;
 	border-color: white;
+	border-width: 4px; */
+}
+
+.blocksChosen {
+	width: 2000x;
+	height: 80px;
+	border-radius: 12px;
+	margin: auto;
+	margin-bottom: 36px;
+	background: white;
+	/* border-style: solid;
+	border-color: #0F15AE;
 	border-width: 4px; */
 }
 

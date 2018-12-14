@@ -73,7 +73,7 @@ socket.on('gameState', function (data) {
                 }
             });
         }
-    } else if (gameData.gameState == "ended" && endGameRefresh == 1) {
+    } else if (gameData.gameState == "ended") {
         endGame(gameData);
         endGameRefresh = 0;
     }
@@ -311,6 +311,7 @@ $("#main")[0].addEventListener("click", function (e) {
                 decision.choice = 0;
                 $("#choice-a")[0].classList.add("choice-a-tick");
                 $("#choice-b")[0].classList.remove("choice-b-tick");
+                socket.emit("onHover", decision.choice);
                 break;
             }
 
@@ -327,6 +328,7 @@ $("#main")[0].addEventListener("click", function (e) {
                 decision.choice = 1;
                 $("#choice-b")[0].classList.add("choice-b-tick");
                 $("#choice-a")[0].classList.remove("choice-a-tick");
+                socket.emit("onHover", decision.choice);
                 break;
             }
 
