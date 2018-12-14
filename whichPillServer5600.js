@@ -10,7 +10,9 @@ const server = require('http').createServer(app).listen(port, function() {
   console.log(`server on ${port}`);
 });
 
-module.exports = { server: server };
+module.exports = {
+  server: server
+};
 
 const io = require('socket.io').listen(server);
 
@@ -34,6 +36,9 @@ web.on('connection', function(socket) {
     let cookie = data.cookie;
     game.addUser(name, socketId, role, cookie);
     io.emit('gameState', game.getGameData());
+    setTimeout(function() {
+      io.emit('gameState', game.getGameData());
+    }, 1000);
   });
 
   socket.on('resetGame', function() {
@@ -58,7 +63,7 @@ web.on('connection', function(socket) {
     io.emit('gameState', game.getGameData());
     if (win) {
       io.emit('showGif', 1);
-    }else {
+    } else {
       io.emit('showGif', 0);
     }
   });
@@ -82,7 +87,7 @@ web.on('connection', function(socket) {
     game.userLeavesGame(socket.id);
   })
 
-  socket.on('enableAI', function () {
+  socket.on('enableAI', function() {
     insertAI();
     console.log('AI added');
     console.log(JSON.stringify(game.users));
