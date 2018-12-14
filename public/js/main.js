@@ -64,14 +64,18 @@ socket.on('gameState', function (data) {
     } else if (gameData.gameState == "prep") {
         if (gameData.users.length > 0) {
             let newDiv = $("<div></div>");
+
+            while (document.getElementById("main").childElementCount > 2) {
+                $("#main")[0].removeChild($("#main")[0].lastChild);
+            }
+            let index = document.getElementById("main").childElementCount;
             for (i = 0; i < gameData.users.length; i++) {
-                let index = document.getElementById("main").childElementCount;
                 $("#main").append(newDiv.clone());
-                console.log(index);
                 $("#main")[0].children[index].id = `playerJoin${index}`;
 
                 $(`#playerJoin${index}`)[0].classList.add("description-join");
                 $(`#playerJoin${index}`)[0].innerHTML = `${gameData.users[i].name} has joined!`
+                index++;
             }
         }
         centerContent();
