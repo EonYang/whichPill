@@ -261,8 +261,9 @@ function endGame(data) {
     let userNumber = data.users.length;
     let maxIndex;
     for (i = 0; i < userNumber; i++) {
-        if (data.users[i].sum > maxSum) {
+        if (data.users[i].sum >= maxSum) {
             maxIndex = i;
+            maxSum = data.users[i].sum;
         }
     }
 
