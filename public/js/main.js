@@ -23,7 +23,7 @@ socket.on('gameState', function (data) {
         refreshScreen = 0;
     } else if (gameData.gameState == "inProgress" && refreshScreen == 0) {
         updateScreen(gameData);
-    } else if (gameData.gameState == "endGame") {
+    } else if (gameData.gameState == "ended") {
         endGame(gameData);
     }
     console.log(data);
