@@ -13,6 +13,7 @@ function preload() {
 }
 
 function setup() {}
+
 function draw() {}
 
 // Server
@@ -33,6 +34,29 @@ socket.on('gameState', function (data) {
         updateScreen(gameData);
     } else if (gameData.gameState == "ended") {
         endGame(gameData);
+        
+        let hasWon = gameData.lastTurn.hasWin;
+
+        let index = document.getElementById("main").childElementCount;
+
+        if (hasWon) {
+            // winSound.playMode('restart');
+            winSound.play();
+            let newIcon = $("<img />");
+            $("#main").append(newIcon.clone());
+            $("#main")[0].childNodes[index].src = "assets/win.gif";
+            $("#main")[0].childNodes[index].id = "giffy";
+            $("#main")[0].childNodes[index].classList.add("gif", "animated", "fadeIn", "faster");
+
+        } else if (!hasWon) {
+            // loseSound.playMode('restart');
+            loseSound.play();
+            let newIcon = $("<img />");
+            $("#main").append(newIcon.clone());
+            $("#main")[0].childNodes[index].src = "assets/lose.gif";
+            $("#main")[0].childNodes[index].id = "giffy";
+            $("#main")[0].childNodes[index].classList.add("gif", "animated", "fadeIn", "faster");
+        }
     }
     console.log(data);
 });
@@ -226,8 +250,6 @@ function updateScreen(gameData) {
     choiceIndex = gameData.lastTurn.which;
     currentPlayer = gameData.whosTurn.name;
     round = gameData.round;
-
-
 
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
         // winSound.playMode('restart');
