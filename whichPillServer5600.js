@@ -25,7 +25,7 @@ web.on('connection', function(socket) {
   socket.on('sendCookie', function(data) {
     console.log(JSON.stringify(data));
     game.isThisANewPlayer(data, socket.id);
-    io.emit('gameState', game.getGameData());
+    socket.emit('gameState', game.getGameData());
   });
 
   socket.on('setNameAndRole', function(data) {
