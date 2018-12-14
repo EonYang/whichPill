@@ -9,6 +9,7 @@ let nameAndRole = {
 let gameSatus = 0; // 0: Preparing; 1: Started; 2: End
 let afterYourTurn = false;
 let endGameRefresh = 1;
+let firstComment = 1;
 let decision = {
     who: "",
     choice: 2
@@ -82,7 +83,11 @@ socket.on('gameState', function (data) {
                 othersTurnRefreshName(gameData.whosTurn.name);
             }
         } else if (nameAndRole.role == "Audience") {
-            myComment();
+            if (firstComment == 1) {
+                myComment();
+                firstComment = 0;
+            } else if (firstComment == 0) {}
+
             $("#button-send")[0].addEventListener("click", function () {
                 if ($("#input-4").val().trim().length === 0) {
                     textField.classList.add("input__label--error");
@@ -269,12 +274,12 @@ function endGame(data) {
     // Add new elements
     var newIcon = $("<img />");
     $("#main").append(newIcon);
-    $("#main")[0].firstChild.src = "assets/pill.png";
+    $("#main")[0].firstChild.src = "assets/goldenPill.png";
     $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
 
     var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
     $("#main").append(newDiv);
-    $("#main")[0].childNodes[1].classList.add("description", "animated", "fadeIn", "slow");
+    $("#main")[0].childNodes[1].classList.add("descriptionEnded", "animated", "fadeIn", "slow");
 
     centerContent();
 }

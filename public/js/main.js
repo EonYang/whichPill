@@ -7,6 +7,12 @@ let lastPlayer;
 var winSound = new Audio('assets/correct.mp3');
 // var loseSOund = new Audio('assets/wrong.mp3');
 
+function preload() {
+    soundFormats('mp3', 'ogg');
+    winSound = loadSound('assets/win.mp3');
+    loseSound = loadSound('assets/lose.mp3');
+}
+
 // Server
 socket.on('connect', function () {
     console.log("You are connected: " + socket.id);
@@ -222,29 +228,16 @@ function updateScreen(gameData) {
 
 
     if (hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        console.log("WON GIF!");
-        let newDiv = $("<div></div>");
-        let newIframe = $("<iframe></iframe>");
-        // let txtPercentageA1 = $("<iframe></iframe>").text(`${(100 * chanceA).toFixed(0)}%`);
-        // <iframe src="https://giphy.com/embed/2tNt3yLVozKj34DE8A" width="480" height="267" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-        // if (choiceIndex = 0) {
-        //     $("#redPill")[0].src = "assets/correct.png";
-        // } else if (choiceIndex = 1) {
-        //     $("#bluePill")[0].src = "assets/correct.png";
-        // }
+        winSound.playMode('restart');
+        winSound.play();
         let newIcon = $("<img />");
-        // winSound.play();
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/win.gif";
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
 
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
-        // if (choiceIndex = 0) {
-        //     $("#redPill")[0].src = "assets/wrong.png";
-        // } else if (choiceIndex = 1) {
-        //     $("#bluePill")[0].src = "assets/wrong.png";
-        // }
-        let newDiv = $("<div></div>");
+        loseSound.playMode('restart');
+        loseSound.play();
         let newIcon = $("<img />");
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/lose.gif";
@@ -358,13 +351,42 @@ function endGame(data) {
 
     // Add new elements
     var newIcon = $("<img />");
+    let newDiv = $("<div></div>");
     $("#main").append(newIcon);
-    $("#main")[0].firstChild.src = "assets/pill.png";
-    $("#main")[0].firstChild.classList.add("image", "animated", "fadeIn");
+    $("#main")[0].firstChild.src = "assets/goldenPill.png";
+    $("#main")[0].firstChild.classList.add("imageEnded", "animated", "fadeIn");
 
-    var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
+    // var newDiv = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner with a total strength of ${data.users[maxIndex].sum}!`);
+    var txt = $("<div></div>").text(`Game Ended! ${data.users[maxIndex].name} is the winner!`);
+    $("#main").append(txt);
+    $("#main")[0].childNodes[1].classList.add("descriptionEnded", "animated", "fadeIn", "slow");
+
     $("#main").append(newDiv);
-    $("#main")[0].childNodes[1].classList.add("description", "animated", "fadeIn", "slow");
+    $("#main")[0].childNodes[2].id = "endContainer"
+
+    for (i = 0; i < userNumber; i++) {
+        blockGeneratorEnded(i, data.users[i].name, data.users[i].sum);
+    }
 
     centerContent();
+}
+
+function blockGeneratorEnded(id, name, score) {
+    let newDiv = $("<div></div>");
+    let blockId = `scoreblock${id}`;
+    capName = jsUcfirst(name);
+    $("#endContainer").append(newDiv.clone());
+    $("#endContainer")[0].childNodes[`${id}`].id = blockId;
+
+    $(`#${blockId}`).append(newDiv.clone());
+    $(`#${blockId}`).append(newDiv.clone());
+    $(`#${blockId}`)[0].classList.add("blocksEnded");
+    $(`#${blockId}`)[0].childNodes[0].id = `${blockId}Name`;
+    $(`#${blockId}`)[0].childNodes[1].id = `${blockId}Score`;
+
+    $(`#${blockId}Name`)[0].classList.add("blockTitle");
+    $(`#${blockId}Score`)[0].classList.add("blockText");
+    $(`#${blockId}Name`)[0].innerHTML = `${capName}`;
+    $(`#${blockId}Score`)[0].innerHTML = `${score}`;
+
 }

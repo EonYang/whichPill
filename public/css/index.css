@@ -758,6 +758,21 @@ button:focus {
 	animation: anim-1 0.3s forwards;
 }
 
+.descriptionEnded {
+	position: relative;
+	height: 40px;
+	text-align: center;
+	font-size: 3em;
+	font-family: 'Montserrat', sans-serif;
+	letter-spacing: 4px;
+	text-transform: uppercase;
+	font-weight: 500;
+	margin-bottom: 40px;
+	margin-left: 60px;
+	margin-right: 60px;
+
+}
+
 @-webkit-keyframes anim-1 {
 	50% {
 		opacity: 0;
