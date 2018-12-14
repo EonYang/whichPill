@@ -38,7 +38,7 @@ web.on('connection', function(socket) {
     io.emit('gameState', game.getGameData());
     setTimeout(function() {
       io.emit('gameState', game.getGameData());
-    }, 20);
+    }, 1000);
   });
 
   socket.on('resetGame', function() {
