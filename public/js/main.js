@@ -57,6 +57,10 @@ socket.on('gameState', function (data) {
             $("#main")[0].childNodes[index].id = "giffy";
             $("#main")[0].childNodes[index].classList.add("gif", "animated", "fadeIn", "faster");
         }
+
+        setTimeout(function () {
+            $("#giffy").remove();
+        }, 6000);
     }
     console.log(data);
 });
