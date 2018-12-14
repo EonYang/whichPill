@@ -63,7 +63,7 @@ class GAME {
   }
 
   addUser(name, socketId, role, cookie) {
-    if (this.state == 'prep') {
+    if (this.state == 'prep' && role == 'player') {
       let data = {
         name: name,
         socketId: socketId,

@@ -63,6 +63,11 @@ web.on('connection', function(socket) {
     io.emit('newChat', data);
   });
 
+  socket.on('onHover', function(data) {
+    console.log(JSON.stringify(data));
+    io.emit('userHover', data);
+  });
+
   socket.on('setEndRound', function(data) {
     console.log(JSON.stringify(data));
     game.setEndRound(data);
