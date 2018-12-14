@@ -213,6 +213,7 @@ class GAME {
       questions: [this.currentQuestion],
       lastTurn: this.lastTurn,
     }
+    let users = []
     for (var i = 0; i < this.users.length; i++) {
       let user = {
         name: this.users[i].name,
@@ -222,10 +223,10 @@ class GAME {
         socket: this.users[i].socketId,
         cookie: this.users[i].cookie,
       }
-      data.users.push(user);
+      users.push(user);
     }
-
-    data.users = sortUsersBySum(data.users);
+    users.sort(compare);
+    data.users = users;
     console.log(`send data to client`);
     console.log(JSON.stringify(data));
     return data
@@ -288,30 +289,18 @@ class GAME {
   }
 }
 
-var sortUsersBySum = (users) => {
-  let sortSum = (arr) => {
-    let sorted = []
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i].hasOwnProperty('sum')) {
-        sorted.push(arr[i].sum);
-      }
-    }
-    sorted.sort((a, b) => b - a);
-    return sorted;
+function compare(a, b) {
+  const sumA = a.sum
+  const sumB = b.sum
+  let comparison = 0;
+  if (sumA > sumB) {
+    comparison = -1;
+  } else if (sumA < sumB) {
+    comparison = 1;
   }
-
-  let r = [];
-  let sortedKeys = sortSum(users);
-  for (let k = 0; k < users.length; k++) {
-    let key = sortedKeys[k];
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].sum === key) {
-        r.push(users[i])
-      }
-    }
-  }
-  return r
+  return comparison;
 }
+
 
 let game = new GAME();
 
