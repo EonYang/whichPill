@@ -235,6 +235,7 @@ function updateScreen(gameData) {
         let newIcon = $("<img />");
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/win.gif";
+        $("#main")[0].childNodes[2].id = "giffy";
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
 
     } else if (!hasWon && hasWon !== undefined && lastPlayer != currentPlayer) {
@@ -243,6 +244,7 @@ function updateScreen(gameData) {
         let newIcon = $("<img />");
         $("#main").append(newIcon.clone());
         $("#main")[0].childNodes[2].src = "assets/lose.gif";
+        $("#main")[0].childNodes[2].id = "giffy";
         $("#main")[0].childNodes[2].classList.add("gif", "animated", "fadeIn", "faster");
     }
 
@@ -255,7 +257,7 @@ function updateScreen(gameData) {
         $("#choice-a")[0].style.borderColor = "white";
         $("#choice-b")[0].style.borderColor = "white";
 
-        $("#main")[0].removeChild($("#main")[0].childNodes[2]);
+        $("#giffy").remove();
 
         for (i = 0; i < userNumber; i++) {
             let score = gameData.users[i].sum;
