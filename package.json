@@ -4,6 +4,7 @@
   "description": "## socket events and data snippet",
   "main": "whichPillServer5600.js",
   "scripts": {
+    "start": "node whichPillServer5600.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
