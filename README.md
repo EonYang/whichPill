@@ -1,136 +1,31 @@
 # whichPill
 
-## socket events and data snippet
+Which Pill is a game about making choices.
 
-### Client to Server
+Imagine you're selected to participate a military experiment. You're given two pills each day.
 
-#### setNameAndRole
+The red pill will increase your strength a little bit, but stable.
 
-    {
-      name:'Yang',
-      role:'player',
-      cookie: ''
-    }
-    // another role is 'audience'
+The blue pill will increase your strenth dramatically, but will possiblly backfire.
 
-#### sendCookie
+After 6 days, there'll be one and only one soldier gets selected to participate next round. If you're not the strongest, you're a failed guinea pig and will get destroyed.
 
-    'cookie string'
+Which pill will you select?
 
-#### resetGame(str);
+## To Play It
 
-    'fhjghjgjkh'
+Players please visited this page on your phone.
 
-#### startGame
+And we'll need a host to visited this page and display the current score of each players.
 
-```
+The host will need to access the console of the browser to start the game.
 
-```
+## APIs
 
-#### makeChoice
+In the browser's console.
 
-```{
-  who:'Daniel',
-  choice:1,
+`start()` to start the game
 
-}
-```
+`reset()` to restart the game
 
-#### sendChat
-
-```{
-  who:'Daniel',
-  text:'asdhjfjksadfjka',
-}
-```
-
-#### setEndRound
-
-```{
-  endRound:7
-}
-```
-
-### Server to Client
-
-#### gameState
-
-    {
-       "users":[
-          {
-             "name":"yang",
-             "online":true,
-             "scores":[
-                29,
-                -9
-             ],
-             "sum":220
-          },
-          {
-             "name":"Jordan",
-             "online":true,
-             "scores":[
-                1217,
-                21
-             ],
-             "sum":1438
-          },
-          {
-             "name":"bitch",
-             "online":true,
-             "scores":[
-                31,
-                -82
-             ],
-             "sum":149
-          },
-          {
-             "name":"kelsey",
-             "online":true,
-             "scores":[
-                320,
-                798
-             ],
-             "sum":1318
-          }
-       ],
-       "round":3,
-       "whosTurn":{
-          "name":"yang",
-          "socketId":"111111"
-       },
-       "questions":[
-          [
-             {
-                "chance":0.17,
-                "value":660,
-                "backfire":-89
-             },
-             {
-                "chance":0.91,
-                "value":24,
-                "backfire":0
-             }
-          ]
-       ],
-       "lastTurn":{
-          "who":"kelsey",
-          "which":0,
-          "hasWin":true,
-          "gain":798
-       }
-    }
-
-        // states:  'prep', 'inProgress', 'ended'
-
-#### newChat
-
-    // to all
-    {
-      who:'daniel',
-      text:'asdjkfhasjkhdfjkhasdf'
-    }
-
-#### gameResetted
-
-nodata
+after restart, players will need to refresh the page.
